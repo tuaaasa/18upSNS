@@ -5,17 +5,8 @@ import {
     StyleSheet,
 } from 'react-native';
 
-const styles = StyleSheet.create({
-    tabText: {
-        color: 'black',
-    },
-    tabTextActive: {
-        color: 'red',
-    },
-});
-
 const TabIcon = (props) => (
-  <Text style={props.selected ? styles.tebTextActive : styles.tabText}>{props.title}</Text>
+  <Text style={{color: props.focused ? '#DF013A': '#000000'}}>{props.title}</Text>
 );
 
 export default TabIcon;
