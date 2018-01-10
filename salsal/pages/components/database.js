@@ -15,8 +15,13 @@ export const setSalsal = (salsal) => {
   FB.ref('salsals').push(salsal);
 }
 
-export const getSalsal = () => {
-  console.log('fin');
+export const getSalsal = (onSalsals) => {
+  const salsals = [];
+  FB.ref('salsals').on('child_added', (data) => {
+    salsals.push({
+
+    });
+  });
 }
 
 export const setPersonalInfo = (userName, userPass, userKey) => {
@@ -30,12 +35,24 @@ export const setPersonalInfo = (userName, userPass, userKey) => {
   userKey(key);
 }
 
+export const getPersonalInfo = (userName, userPass, userKey) => {
+  let key = false;
+  FB.ref('users').on('child_added', (data) => {
+    if(userName == data.val().userName && userPass == data.val().userPass){
+      userKey(data.key);
+    }
+  });
+  return userKey(false);
+}
+
 
 // ----------------------------------------------
 //                    AsyncStorage
 // ----------------------------------------------
-export const loginUser = (userKey) => {
-  AsyncStorage.setItem(JSON.stringify('loginUser'), JSON.stringify(userKey));
+export const loginUser = (userKey, onCallback) => {
+  AsyncStorage.setItem(JSON.stringify('loginUser'), JSON.stringify(userKey)).then(() => {
+    onCallback(true);
+  });
 }
 
 export const logoutUser = () => {
@@ -49,6 +66,16 @@ export const checkLogin = (onCheckLogin) => {
     }
     else{
       onCheckLogin(false);
+    }
+  });
+}
+
+export const getLoginUser = (onUserKey) => {
+  AsyncStorage.getItem(JSON.stringify('loginUser')).then((userKey) => {
+    if(userKey){
+      onUserKey(userKey);
+    }else{
+      onUserKey(false);
     }
   });
 }

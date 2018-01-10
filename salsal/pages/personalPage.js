@@ -7,11 +7,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {
+    Actions,
+} from 'react-native-router-flux';
+import {
   checkLogin,
   setPersonalInfo,
   loginUser,
   logoutUser,
 } from './components/database.js';
+// import RegisterPage from './RegisterPage.js';
+
 
 export default class personalPage extends Component {
   constructor(props) {
@@ -25,19 +30,33 @@ export default class personalPage extends Component {
       this.setState({ loginState: value });
     });
   }
-
+  // -----------------------------------------
+  //                キーバインド
+  // -----------------------------------------
+  // onSetState = (value) => {
+  //   this.setState({ loginState: value });
+  // }
+  //
   logout = () => {
     logoutUser();
-    this.setState({ loginState: false });
+    this.props.onSetState(false);
+  }
+
+  login = () => {
+    Actions.LoginPage();
   }
 
   register = () => {
-    setPersonalInfo(this.userName._lastNativeText, this.userPass._lastNativeText, (userKey) => {
-      loginUser(userKey).then(() => {
-        this.setState({ loginState: true });
-      });
-    });
+    Actions.RegisterPage();
   }
+  //
+  // register = (userName, userPass) => {
+  //   setPersonalInfo(userName, userPass, (userKey) => {
+  //     loginUser(userKey, (value) => {
+  //       this.onSetState(value);
+  //     });
+  //   });
+  // }
 
   render() {
     return (
@@ -55,15 +74,17 @@ export default class personalPage extends Component {
           }else{
             return (
               <View style={styles.pageContainer}>
-                <Text style={styles.text}>名前</Text>
-                <TextInput style={styles.textInput} ref={(ref) => { this.userName = ref; }}/>
-                <Text style={styles.text}>パスワード</Text>
-                <TextInput style={styles.textInput} ref={(ref) => { this.userPass = ref; }}/>
+                <TouchableOpacity onPress={this.login}>
+                  <Text style={styles.buttonText}>ログイン</Text>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={this.register}>
-                  <Text style={styles.buttonText}>登録</Text>
+                  <Text style={styles.buttonText}>新規登録</Text>
                 </TouchableOpacity>
               </View>
             );
+            // return (
+            //   <RegisterPage onPress={this.register}/>
+            // );
           }
         })()}
       </View>

@@ -8,7 +8,10 @@ import {
     TextInput,
     Modal,
 } from 'react-native';
-import {setSalsal} from './database.js';
+import {
+  setSalsal,
+  checkLogin,
+} from './database.js';
 
 export default class themeNavBar extends Component {
   constructor(props){
@@ -17,6 +20,7 @@ export default class themeNavBar extends Component {
     this.state = {
       modalVisible: false,
     };
+
   }
 
   _onPress = () => {
