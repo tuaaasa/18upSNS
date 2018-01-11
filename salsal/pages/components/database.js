@@ -11,17 +11,28 @@ export const makeRandomNum = () => {
 // ----------------------------------------------
 //                    firebase
 // ----------------------------------------------
-export const setSalsal = (salsal) => {
-  FB.ref('salsals').push(salsal);
+export const setSalsal = (salsal, userKey) => {
+  let date = new Date();
+  const salsalData = {
+    userKey: userKey,
+    salsal: salsal,
+    date: date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate(),
+    time: date.getMinutes() > 9 ? date.getHours()+':'+date.getMinutes() : date.getHours()+':0'+date.getMinutes(),
+  };
+  FB.ref('salsals').push(salsalData);
 }
 
-export const getSalsal = (onSalsals) => {
-  const salsals = [];
+export const getSalsal = (onSalsal) => {
+  const list = [];
   FB.ref('salsals').on('child_added', (data) => {
-    salsals.push({
-
+    list.push({
+      userKey: data.val().userKey,
+      salsal: data.val().salsal,
+      date: data.val().date,
+      time: data.val().date,
     });
   });
+  onSalsal(list);
 }
 
 export const setPersonalInfo = (userName, userPass, userKey) => {
@@ -43,6 +54,15 @@ export const getPersonalInfo = (userName, userPass, userKey) => {
     }
   });
   return userKey(false);
+}
+
+export const keyToName = (userKey, userName) => {
+  FB.ref('users').on('child_added', (data) => {
+    if(userKey == data.key){
+      userName(data.val().userName);
+    }
+  });
+
 }
 
 
@@ -73,7 +93,7 @@ export const checkLogin = (onCheckLogin) => {
 export const getLoginUser = (onUserKey) => {
   AsyncStorage.getItem(JSON.stringify('loginUser')).then((userKey) => {
     if(userKey){
-      onUserKey(userKey);
+      onUserKey(JSON.parse(userKey));
     }else{
       onUserKey(false);
     }

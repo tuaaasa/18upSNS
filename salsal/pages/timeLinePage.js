@@ -1,16 +1,48 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
+  TouchableOpacity,
   Text,
   View,
   FlatList,
 } from 'react-native';
+import Salsals from './Salsals.js';
+import {
+  getSalsal,
+} from './components/database.js';
 
 export default class timeLinePage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      salsalList: [],
+    };
+  }
+
+  _onPress = (index) => {
+    console.log('いいね'+index);
+    // いいね関数をいれる
+  }
+
+  reload = () => {
+    getSalsal((data) => {
+      this.setState({ salsalList: data });
+    });
+  }
+
   render() {
+    console.log(this.state.salsalList);
     return (
       <View style={styles.pageContainer}>
-        <Text style={styles.text}>タイムラインをここに表示予定だよ</Text>
+        <TouchableOpacity style={styles.button} onPress={this.reload}>
+          <Text style={styles.btntext}>更新</Text>
+        </TouchableOpacity>
+        <Text style={styles.text}>タイムラインをここに表示しています</Text>
+        <FlatList
+          data={this.state.salsalList}
+          renderItem={({ item, index }) => <Salsals onPress={this._onPress(index)} {...item} />}
+        />
       </View>
     );
   }
@@ -25,5 +57,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  button: {
+    backgroundColor: '#87cefa',
+    padding: 10,
+    margin: 20,
+  },
+  btntext: {
+    textAlign: 'center',
   },
 });

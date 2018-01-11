@@ -11,6 +11,7 @@ import {
 import {
   setSalsal,
   checkLogin,
+  getLoginUser,
 } from './database.js';
 
 export default class themeNavBar extends Component {
@@ -19,8 +20,12 @@ export default class themeNavBar extends Component {
 
     this.state = {
       modalVisible: false,
+      loginState: false,
     };
 
+    getLoginUser((userKey) => {
+      this.setState({ loginState: userKey });
+    });
   }
 
   _onPress = () => {
@@ -28,8 +33,7 @@ export default class themeNavBar extends Component {
   }
 
   _onPressSend = () => {
-    setSalsal(this.salsal._lastNativeText);
-    // console.log(this.salsal._lastNativeText);
+    setSalsal(this.salsal._lastNativeText, this.state.loginState);
     this.setState({ modalVisible: false });
   }
 

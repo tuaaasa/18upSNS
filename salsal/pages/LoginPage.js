@@ -9,6 +9,7 @@ import {
 import {
   getPersonalInfo,
   loginUser,
+  keyToName, //テスト
 } from './components/database.js';
 import {
     Actions,
