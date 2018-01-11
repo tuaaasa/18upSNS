@@ -14,6 +14,8 @@ import {
   setPersonalInfo,
   loginUser,
   logoutUser,
+  getLoginUser,
+  getPersonalInfo,
 } from './components/database.js';
 // import RegisterPage from './RegisterPage.js';
 
@@ -24,19 +26,28 @@ export default class personalPage extends Component {
 
     this.state = {
       loginState: false,
+      personalInfo: [],
     };
 
     checkLogin((value) => {
-      this.setState({ loginState: value });
+      if(value){
+        getLoginUser((userKey) => {
+          getPersonalInfo(userKey, (info) => {
+            this.setState({
+              loginState: value,
+              personalInfo: info,
+            });
+          });
+        });
+      }else{
+        this.setState({ loginState: value });
+      }
+
     });
   }
   // -----------------------------------------
   //                キーバインド
   // -----------------------------------------
-  // onSetState = (value) => {
-  //   this.setState({ loginState: value });
-  // }
-  //
   logout = () => {
     logoutUser();
     this.props.onSetState(false);
@@ -49,24 +60,19 @@ export default class personalPage extends Component {
   register = () => {
     Actions.RegisterPage();
   }
-  //
-  // register = (userName, userPass) => {
-  //   setPersonalInfo(userName, userPass, (userKey) => {
-  //     loginUser(userKey, (value) => {
-  //       this.onSetState(value);
-  //     });
-  //   });
-  // }
 
   render() {
+    const info = this.state.personalInfo;
+
     return (
       <View style={styles.pageContainer}>
         {(() => {
           if(this.state.loginState){
             return (
               <View style={styles.pageContainer}>
-                <Text style={styles.text}>個人ページ</Text>
-                <TouchableOpacity onPress={this.logout}>
+                <Text style={styles.levelText}>{'Lv.'+info.level+'  '+info.userName}</Text>
+                <Text style={styles.commentText}>{info.comment}</Text>
+                <TouchableOpacity style={{ margin: 40 }} onPress={this.logout}>
                   <Text style={styles.buttonText}>ログアウト</Text>
                 </TouchableOpacity>
               </View>
@@ -82,9 +88,6 @@ export default class personalPage extends Component {
                 </TouchableOpacity>
               </View>
             );
-            // return (
-            //   <RegisterPage onPress={this.register}/>
-            // );
           }
         })()}
       </View>
@@ -100,7 +103,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
     alignItems: 'stretch',
   },
-  text: {
+  levelText: {
+    margin: 10,
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  commentText: {
     fontSize: 20,
     textAlign: 'center',
   },

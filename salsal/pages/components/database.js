@@ -46,7 +46,7 @@ export const setPersonalInfo = (userName, userPass, userKey) => {
   userKey(key);
 }
 
-export const getPersonalInfo = (userName, userPass, userKey) => {
+export const getPersonalKey = (userName, userPass, userKey) => {
   let key = false;
   FB.ref('users').on('child_added', (data) => {
     if(userName == data.val().userName && userPass == data.val().userPass){
@@ -54,6 +54,19 @@ export const getPersonalInfo = (userName, userPass, userKey) => {
     }
   });
   return userKey(false);
+}
+
+export const getPersonalInfo = (userKey, onPersonalInfo) => {
+  FB.ref('users').on('child_added', (data) => {
+    if(userKey == data.key){
+      const info = {
+        userName: data.val().userName,
+        comment: data.val().comment,
+        level: data.val().level,
+      };
+      onPersonalInfo(info);
+    }
+  });
 }
 
 export const keyToName = (userKey, userName) => {
