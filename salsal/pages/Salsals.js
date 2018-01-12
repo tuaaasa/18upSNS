@@ -14,13 +14,13 @@ export default class Salsals extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      userName: 'No Name',
-    };
-
-    keyToName(this.props.userKey, (userName) => {
-      this.setState({ userName: userName });
-    });
+    // this.state = {
+    //   userName: 'No Name',
+    // };
+    //
+    // keyToName(this.props.userKey, (userName) => {
+    //   this.setState({ userName: userName });
+    // });
   }
 
   render() {
@@ -28,18 +28,16 @@ export default class Salsals extends Component {
       salsal,
       date,
       time,
-      onPress,
+      onGood,
     } = this.props;
-    console.log('あ');
-    console.log(salsal);
 
     return (
       <View style={styles.rowStyle}>
         <View style={styles.textStetas}>
-          <Text style={styles.infoText}>{this.state.userName+'  '+date+'  '+time}</Text>
+          <Text style={styles.infoText}>{'  '+date+'  '+time}</Text>
           <Text style={styles.salsalText}>{salsal}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={onPress}>
+        <TouchableOpacity style={styles.button} onPress={onGood}>
           <Text style={styles.btntext}>いいね</Text>
         </TouchableOpacity>
       </View>

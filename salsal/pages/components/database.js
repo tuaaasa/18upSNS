@@ -29,7 +29,7 @@ export const getSalsal = (onSalsal) => {
       userKey: data.val().userKey,
       salsal: data.val().salsal,
       date: data.val().date,
-      time: data.val().date,
+      time: data.val().time,
     });
   });
   onSalsal(list);

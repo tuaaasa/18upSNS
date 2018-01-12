@@ -15,9 +15,17 @@ export default class timeLinePage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      salsalList: [],
-    };
+    // this.state = {
+    //   salsalList: [],
+    // };
+
+    getSalsal((data) => {
+      if(data){
+        this.state = {
+          salsalList: data,
+        };
+      }
+    });
   }
 
   _onPress = (index) => {
@@ -41,7 +49,8 @@ export default class timeLinePage extends Component {
         <Text style={styles.text}>タイムラインをここに表示しています</Text>
         <FlatList
           data={this.state.salsalList}
-          renderItem={({ item, index }) => <Salsals onPress={this._onPress(index)} {...item} />}
+          renderItem={({ item, index }) => <Salsals onGood={this._onPress(index)} {...item} />}
+          keyExtractor={(item, index) => index}
         />
       </View>
     );
