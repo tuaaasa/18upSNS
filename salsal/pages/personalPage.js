@@ -28,8 +28,10 @@ export default class personalPage extends Component {
       loginState: false,
       personalInfo: [],
     };
+  }
 
-    if(this.state.loginState){
+  componentDidMount = () => {
+    if(this.state.loginState == false){
       checkLogin((value) => {
         if(value){
           getLoginUser((userKey) => {
