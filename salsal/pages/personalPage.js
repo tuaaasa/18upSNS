@@ -29,28 +29,27 @@ export default class personalPage extends Component {
       personalInfo: [],
     };
 
-    checkLogin((value) => {
-      if(value){
-        getLoginUser((userKey) => {
-          getPersonalInfo(userKey, (info) => {
-            this.setState({
-              loginState: value,
-              personalInfo: info,
+    if(this.state.loginState){
+      checkLogin((value) => {
+        if(value){
+          getLoginUser((userKey) => {
+            getPersonalInfo(userKey, (info) => {
+              this.setState({
+                loginState: value,
+                personalInfo: info,
+              });
             });
           });
-        });
-      }else{
-        this.setState({ loginState: value });
-      }
-
-    });
+        }
+      });
+    }
   }
   // -----------------------------------------
   //                キーバインド
   // -----------------------------------------
   logout = () => {
     logoutUser();
-    this.props.onSetState(false);
+    this.setState({ loginState: false });
   }
 
   login = () => {

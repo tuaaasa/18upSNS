@@ -22,8 +22,8 @@ export default class RegisterPage extends Component {
   _onPress = () => {  //バリデーション設定が必要
     setPersonalInfo(this.userName._lastNativeText, this.userPass._lastNativeText, (userKey) => {
       loginUser(userKey, (value) => {
-        this.props.onSetState(value);
         Actions.personalPage();
+        Actions.refresh();
       });
     });
   }

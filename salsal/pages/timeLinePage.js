@@ -18,13 +18,13 @@ export default class timeLinePage extends Component {
 
     this.list = [];
     this.state = {
-      salsalList: [],
+      salsalList: this.list,
       listUpdate: 0,
     };
 
     getSalsal((data) => {
       if(data){
-        this.list.push(data);
+        this.list.unshift(data);
         this.setState({
           salsalList: this.list,
           listUpdate: this.state.listUpdate + 1,
@@ -33,16 +33,10 @@ export default class timeLinePage extends Component {
     });
   }
 
-  good = (index) = () => {
-    console.log('いいね'+index);
+  good = (index) => () => {
+    console.log(this.state.salsalList[index].salsal);
     // いいね関数をいれる
   }
-
-  // reload = () => {
-  //   getSalsal((data) => {
-  //     this.setState({ salsalList: data });
-  //   });
-  // }
 
   render() {
     return (

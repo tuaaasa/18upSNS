@@ -29,23 +29,6 @@ import LoginPage from './pages/LoginPage.js';
 
 
 class App extends Component {
-  // ここにloginState置いて子コンポに渡す
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loginState: false,
-    };
-
-    checkLogin((value) => {
-      this.setState({ loginState: value });
-    });
-  }
-
-  onSetState = (value) => {
-    this.setState({ loginState: value });
-  }
-
   render() {
     // logoutUser();
     return (
@@ -56,10 +39,10 @@ class App extends Component {
             <Scene key='rankingPage' component={rankingPage} title="ランキング" icon={TabIcon}/>
             <Scene key='themePage' navBar={themeNavBar} component={themePage} title="お題" icon={TabIcon}/>
             <Scene key='favoriteUserListPage' component={favoriteUserListPage} title="お気に入り" icon={TabIcon}/>
-            <Scene key='personalPage' component={personalPage} title="自分" icon={TabIcon}　onSetState={this.onSetState} state={this.state.loginState}/>
+            <Scene key='personalPage' component={personalPage} title="自分" icon={TabIcon}/>
           </Scene>
-          <Scene key='RegisterPage' component={RegisterPage} title='新規登録' onSetState={this.onSetState}/>
-          <Scene key='LoginPage' component={LoginPage} title='ログイン' onSetState={this.onSetState}/>
+          <Scene key='RegisterPage' component={RegisterPage} title='新規登録'/>
+          <Scene key='LoginPage' component={LoginPage} title='ログイン'/>
         </Stack>
       </Router>
     );

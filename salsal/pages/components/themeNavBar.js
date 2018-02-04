@@ -75,10 +75,10 @@ const styles = StyleSheet.create({
     height: (Platform.OS === 'ios') ? 64 : 54,
     flexDirection: 'row',
     paddingTop: 35,
-    backgroundColor: '#2ECCFA',
+    backgroundColor: '#FAFAFA',
   },
   sendAndCancel: {
-    backgroundColor: '#2ECCFA',
+    backgroundColor: '#FAFAFA',
     height: (Platform.OS === 'ios') ? 64 : 54,
     flexDirection: 'row',
     paddingTop: 35,

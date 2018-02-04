@@ -24,9 +24,11 @@ export default class LoginPage extends Component {
     getPersonalKey(this.userName._lastNativeText, this.userPass._lastNativeText, (userKey) => {
       if(userKey){
         loginUser(userKey, (value) => {
-          this.props.onSetState(value);
+          if(value){
+            Actions.personalPage();
+            Actions.refresh();
+          }
         });
-        Actions.personalPage();
       }else{
         // ここにバリデーション
         console.log('ない');
