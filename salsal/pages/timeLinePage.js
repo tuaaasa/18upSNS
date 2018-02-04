@@ -5,6 +5,7 @@ import {
   Text,
   View,
   FlatList,
+  // Timers,
 } from 'react-native';
 import Salsals from './Salsals.js';
 import {
@@ -15,42 +16,42 @@ export default class timeLinePage extends Component {
   constructor(props) {
     super(props);
 
-    // this.state = {
-    //   salsalList: [],
-    // };
+    this.list = [];
+    this.state = {
+      salsalList: [],
+      listUpdate: 0,
+    };
 
     getSalsal((data) => {
       if(data){
-        this.state = {
-          salsalList: data,
-        };
+        this.list.push(data);
+        this.setState({
+          salsalList: this.list,
+          listUpdate: this.state.listUpdate + 1,
+        });
       }
     });
   }
 
-  _onPress = (index) => {
+  good = (index) = () => {
     console.log('いいね'+index);
     // いいね関数をいれる
   }
 
-  reload = () => {
-    getSalsal((data) => {
-      this.setState({ salsalList: data });
-    });
-  }
+  // reload = () => {
+  //   getSalsal((data) => {
+  //     this.setState({ salsalList: data });
+  //   });
+  // }
 
   render() {
-    console.log(this.state.salsalList);
     return (
       <View style={styles.pageContainer}>
-        <TouchableOpacity style={styles.button} onPress={this.reload}>
-          <Text style={styles.btntext}>更新</Text>
-        </TouchableOpacity>
-        <Text style={styles.text}>タイムラインをここに表示しています</Text>
         <FlatList
           data={this.state.salsalList}
-          renderItem={({ item, index }) => <Salsals onGood={this._onPress(index)} {...item} />}
+          execData={this.state.listUpdate}
           keyExtractor={(item, index) => index}
+          renderItem={({ item, index }) => <Salsals onGood={this.good(index)} {...item} />}
         />
       </View>
     );

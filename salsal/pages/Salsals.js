@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -10,40 +10,28 @@ import {
 } from './components/database.js';
 
 
-export default class Salsals extends Component {
-  constructor(props) {
-    super(props);
+const Salsals = (props) => {
+  const {
+    salsal,
+    date,
+    time,
+    onGood,
+  } = props;
 
-    // this.state = {
-    //   userName: 'No Name',
-    // };
-    //
-    // keyToName(this.props.userKey, (userName) => {
-    //   this.setState({ userName: userName });
-    // });
-  }
-
-  render() {
-    const {
-      salsal,
-      date,
-      time,
-      onGood,
-    } = this.props;
-
-    return (
-      <View style={styles.rowStyle}>
-        <View style={styles.textStetas}>
-          <Text style={styles.infoText}>{'  '+date+'  '+time}</Text>
-          <Text style={styles.salsalText}>{salsal}</Text>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={onGood}>
-          <Text style={styles.btntext}>いいね</Text>
-        </TouchableOpacity>
+  return (
+    <View style={styles.rowStyle}>
+      <View style={styles.textStetas}>
+        <Text style={styles.infoText}>{'  '+date+'  '+time}</Text>
+        <Text style={styles.salsalText}>{salsal}</Text>
       </View>
-    );
-  }
+      <TouchableOpacity style={styles.button} onPress={onGood}>
+        <Text style={styles.btntext}>いいね</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
+
+export default Salsals;
 
 const styles = StyleSheet.create({
   rowStyle: {

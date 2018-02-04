@@ -23,16 +23,16 @@ export const setSalsal = (salsal, userKey) => {
 }
 
 export const getSalsal = (onSalsal) => {
-  const list = [];
+  // const list = [];
   FB.ref('salsals').on('child_added', (data) => {
-    list.push({
+    onSalsal({
       userKey: data.val().userKey,
       salsal: data.val().salsal,
       date: data.val().date,
       time: data.val().time,
     });
   });
-  onSalsal(list);
+  // onSalsal(list);
 }
 
 export const setPersonalInfo = (userName, userPass, userKey) => {
