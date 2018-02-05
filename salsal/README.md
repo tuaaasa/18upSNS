@@ -4,7 +4,7 @@
 使用言語 : JavaScript : https://techacademy.jp/magazine/8801  
 フレームワーク : React Native https://blog.codecamp.jp/web_framework , https://qiita.com/Iwark/items/7c27e919bb71f8b256f6
 
-## 1 . Mac(iOS編)
+## 1. Mac(iOS編)
 
 まずはxcode をダウンロードします https://developer.apple.com/jp/xcode/
 
@@ -15,7 +15,7 @@
 ターミナルというアプリも必要ですが、Macは購入時にすでにインストールされているので問題ないです。
 
 
-## 2 . Mac以外のパソコン & Mac(Android編)
+## 2. Mac以外のパソコン & Mac(Android編)
 Coming soon!
 
 
