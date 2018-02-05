@@ -112,3 +112,17 @@ export const getLoginUser = (onUserKey) => {
     }
   });
 }
+
+export const setLocalSalsal = (list) => {
+  AsyncStorage.setItem(JSON.stringify('localSalsal'), JSON.stringify(list));
+}
+
+export const getLocalSalsal = (onCallback) => {
+  AsyncStorage.getItem(JSON.stringify('localSalsal')).then((list) => {
+    if(list){
+      onCallback(JSON.parse(list));
+    }else{
+      onCallback(false);
+    }
+  });
+}

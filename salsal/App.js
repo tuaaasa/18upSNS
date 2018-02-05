@@ -12,38 +12,67 @@ import {
     Modal,
     Actions,
     Stack,
+    Drawer,
 } from 'react-native-router-flux';
 import {
   checkLogin,
   logoutUser,
+  getLoginUser,
+  getPersonalInfo,
 } from './pages/components/database.js';
 import timeLine from './pages/timeLinePage.js';
-import rankingPage from './pages/rankingPage.js';
-import themePage from './pages/themePage.js';
-import favoriteUserListPage from './pages/favoriteUserListPage.js';
-import personalPage from './pages/personalPage.js';
-import TabIcon from './pages/components/TabIcon.js';
 import themeNavBar from './pages/components/themeNavBar.js';
-import RegisterPage from './pages/RegisterPage.js';
-import LoginPage from './pages/LoginPage.js';
-
+import startPage from './pages/startPage.js';
+import personalPage from './pages/personalPage.js';
+import MenuIcon from './pages/components/images/menu_burger.png';
+import DrawerContent from './pages/components/DrawerContent.js';
 
 class App extends Component {
+  // constructor(props) {
+  //   super(props);
+  //
+  //   this.state = {
+  //     loginState: false,
+  //     personalInfo: null,
+  //     listUpdate: 0,
+  //   };
+  //
+  //   if(this.state.loginState == false){
+  //     checkLogin((value) => {
+  //       if(value){
+  //         getLoginUser((userKey) => {
+  //           getPersonalInfo(userKey, (info) => {
+  //             this.setState({
+  //               loginState: true,
+  //               personalInfo: info,
+  //             });
+  //             Actions.timeLine();
+  //           });
+  //         });
+  //       }
+  //     });
+  //   }else{
+  //     Actions.timeLine();
+  //   }
+  // }
+  //
+  // reload = () => {
+  //   this.setState({ listUpdate: this.state.listUpdate + 1 });
+  //   console.log('再更新回数:  '+this.state.listUpdate);
+  // }
+
   render() {
     // logoutUser();
+    // console.log(this.state.loginState);
     return (
       <Router>
-        <Stack key='root'>
-          <Scene key='tabbar' tabs={true} tabBarStyle={styles.tabBar}>
-            <Scene key='timeLine' initial={true} component={timeLine} title="タイムライン" icon={TabIcon}/>
-            <Scene key='rankingPage' component={rankingPage} title="ランキング" icon={TabIcon}/>
-            <Scene key='themePage' navBar={themeNavBar} component={themePage} title="お題" icon={TabIcon}/>
-            <Scene key='favoriteUserListPage' component={favoriteUserListPage} title="お気に入り" icon={TabIcon}/>
-            <Scene key='personalPage' component={personalPage} title="自分" icon={TabIcon}/>
-          </Scene>
-          <Scene key='RegisterPage' component={RegisterPage} title='新規登録'/>
-          <Scene key='LoginPage' component={LoginPage} title='ログイン'/>
-        </Stack>
+        <Scene key="root" hideNavBar={ true }>
+          <Scene key='startPage' initial={true} component={startPage} title='スタート画面'/>
+          <Drawer key="drawer" contentComponent={DrawerContent} drawerWidth={ 300 } drawerImage={MenuIcon}>
+            <Scene key='timeLine' component={timeLine} title="タイムライン"/>
+            <Scene key='personalPage' component={personalPage} title='プロフィール'/>
+          </Drawer>
+        </Scene>
       </Router>
     );
   }
