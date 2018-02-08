@@ -26,67 +26,36 @@ export default class personalPage extends Component {
 
     this.state = {
       loginState: false,
-      personalInfo: [],
-    };
-
-    if(this.state.loginState){
-      checkLogin((value) => {
-        if(value){
-          getLoginUser((userKey) => {
-            getPersonalInfo(userKey, (info) => {
-              this.setState({
-                loginState: value,
-                personalInfo: info,
-              });
+      personalInfo: null,
+    }
+    checkLogin((value) => {
+      if(value){
+        getLoginUser((userKey) => {
+          getPersonalInfo(userKey, (info) => {
+            this.setState({
+              loginState: true,
+              personalInfo: info,
             });
           });
-        }
-      });
-    }
-  }
-  // -----------------------------------------
-  //                キーバインド
-  // -----------------------------------------
-  logout = () => {
-    logoutUser();
-    this.setState({ loginState: false });
-  }
-
-  login = () => {
-    Actions.LoginPage();
-  }
-
-  register = () => {
-    Actions.RegisterPage();
+        });
+      }
+    });
   }
 
   render() {
-    const info = this.state.personalInfo;
-
     return (
       <View style={styles.pageContainer}>
         {(() => {
           if(this.state.loginState){
+            const info = this.state.personalInfo;
             return (
-              <View style={styles.pageContainer}>
+              <View>
                 <Text style={styles.levelText}>{'Lv.'+info.level+'  '+info.userName}</Text>
                 <Text style={styles.commentText}>{info.comment}</Text>
-                <TouchableOpacity style={{ margin: 40 }} onPress={this.logout}>
-                  <Text style={styles.buttonText}>ログアウト</Text>
-                </TouchableOpacity>
               </View>
             );
           }else{
-            return (
-              <View style={styles.pageContainer}>
-                <TouchableOpacity onPress={this.login}>
-                  <Text style={styles.buttonText}>ログイン</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.register}>
-                  <Text style={styles.buttonText}>新規登録</Text>
-                </TouchableOpacity>
-              </View>
-            );
+            <Text style={styles.commentText}>読み込みに失敗しました</Text>
           }
         })()}
       </View>

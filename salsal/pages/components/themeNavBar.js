@@ -12,6 +12,7 @@ import {
   setSalsal,
   checkLogin,
   getLoginUser,
+  getPersonalInfo,
 } from './database.js';
 
 export default class themeNavBar extends Component {
@@ -21,10 +22,16 @@ export default class themeNavBar extends Component {
     this.state = {
       modalVisible: false,
       loginState: false,
+      loginName: false,
     };
 
     getLoginUser((userKey) => {
-      this.setState({ loginState: userKey });
+      getPersonalInfo(userKey, (info) => {
+        this.setState({
+          loginState: userKey,
+          loginName: info.userName,
+        });
+      });
     });
   }
 
@@ -55,7 +62,7 @@ export default class themeNavBar extends Component {
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.alignLeft}>名前</Text>
+              <Text style={styles.alignLeft}>{this.state.loginName}</Text>
               <TextInput style={styles.textInput} ref={(ref) => { this.salsal = ref; }}/>
             </View>
           </View>

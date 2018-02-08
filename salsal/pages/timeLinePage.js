@@ -7,9 +7,14 @@ import {
   FlatList,
   // Timers,
 } from 'react-native';
+import {
+    Actions,
+} from 'react-native-router-flux';
 import Salsals from './Salsals.js';
 import {
   getSalsal,
+  checkLogin,
+  getLoginUser,
 } from './components/database.js';
 
 export default class timeLinePage extends Component {
@@ -20,15 +25,28 @@ export default class timeLinePage extends Component {
     this.state = {
       salsalList: this.list,
       listUpdate: 0,
+      loginUserKey: false,
     };
 
-    getSalsal((data) => {
-      if(data){
-        this.list.unshift(data);
-        this.setState({
-          salsalList: this.list,
-          listUpdate: this.state.listUpdate + 1,
+    if(this.state.listUpdate == 0){
+      getSalsal((data) => {
+        if(data){
+          this.list.unshift(data);
+          this.setState({
+            salsalList: this.list,
+            listUpdate: this.state.listUpdate + 1,
+          });
+        }
+      });
+    }
+
+    checkLogin((value) => { //getSalsalと統合
+      if(value){
+        getLoginUser((userKey) => {
+          this.setState({ loginUserKey: userKey });
         });
+      }else{
+        this.setState({ loginUserKey: false });
       }
     });
   }
@@ -39,13 +57,14 @@ export default class timeLinePage extends Component {
   }
 
   render() {
+    console.log(this.list.length);
     return (
       <View style={styles.pageContainer}>
         <FlatList
           data={this.state.salsalList}
           execData={this.state.listUpdate}
           keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) => <Salsals onGood={this.good(index)} {...item} />}
+          renderItem={({ item, index }) => <Salsals onGood={this.good(index)} loginUser={this.state.loginUserKey} {...item} />}
         />
       </View>
     );

@@ -1,8 +1,13 @@
-## SalSalアプリをダウンロードして、実際にPC上で動かすための環境構築
-## 〜React Nativeダウンロード編〜
+## READ ME 
 
 使用言語 : JavaScript : https://techacademy.jp/magazine/8801  
 フレームワーク : React Native https://blog.codecamp.jp/web_framework , https://qiita.com/Iwark/items/7c27e919bb71f8b256f6
+
+SalSalアプリをダウンロードして、実際にPC上で動かすための環境構築
+〜React Nativeダウンロード編〜
+
+使用言語 : JavaScript : https://techacademy.jp/magazine/8801  
+フレームワーク : React Native https://qiita.com/Iwark/items/7c27e919bb71f8b256f6
 
 ## 1. Mac(iOS編)
 
