@@ -21,6 +21,7 @@ import {
   getPersonalInfo,
 } from './pages/components/database.js';
 import timeLine from './pages/timeLinePage.js';
+import chat from './pages/chat.js';
 import themeNavBar from './pages/components/themeNavBar.js';
 import startPage from './pages/startPage.js';
 import personalPage from './pages/personalPage.js';
@@ -64,14 +65,16 @@ class App extends Component {
   render() {
     // logoutUser();
     // console.log(this.state.loginState);
+    // <Scene key='startPage' initial={true} component={startPage} title='スタート画面'/>
+    // <Scene key='personalPage' component={personalPage} title='プロフィール'/>
+    // <Drawer key="drawer" contentComponent={DrawerContent} drawerWidth={ 300 } drawerImage={MenuIcon}>
     return (
       <Router>
         <Scene key="root" hideNavBar={ true }>
-          <Scene key='startPage' initial={true} component={startPage} title='スタート画面'/>
-          <Drawer key="drawer" contentComponent={DrawerContent} drawerWidth={ 300 } drawerImage={MenuIcon}>
+          <Scene key='tabbar' tabs={true} tabBarStyle={styles.tabBar}>
             <Scene key='timeLine' component={timeLine} title="タイムライン"/>
-            <Scene key='personalPage' component={personalPage} title='プロフィール'/>
-          </Drawer>
+            <Scene key='chat' component={chat} title='チャット'/>
+          </Scene>
         </Scene>
       </Router>
     );

@@ -114,7 +114,9 @@ export const getLoginUser = (onUserKey) => {
 }
 
 export const setLocalSalsal = (list) => {
-  AsyncStorage.setItem(JSON.stringify('localSalsal'), JSON.stringify(list));
+  AsyncStorage.removeItem(JSON.stringify('localSalsal')).then(() => {
+    AsyncStorage.setItem(JSON.stringify('localSalsal'), JSON.stringify(list));
+  });
 }
 
 export const getLocalSalsal = (onCallback) => {

@@ -14,12 +14,12 @@ export default class DrawerContent extends Component {
   render() {
     return (
       <View style={styles.pageContainer}>
-      <TouchableOpacity style={{ margin: 40 }} onPress={Actions.timeLine}>
-        <Text style={styles.buttonText}>タイムライン</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={{ margin: 40 }} onPress={Actions.personalPage}>
-        <Text style={styles.buttonText}>プロフィール</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={Actions.personalPage}>
+          <Text style={styles.buttonText}>プロフィール</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={Actions.timeLine}>
+          <Text style={styles.buttonText}>タイムライン</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -29,7 +29,8 @@ export default class DrawerContent extends Component {
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    marginTop: (Platform.OS === 'ios') ? 20 : 10,
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
     alignItems: 'stretch',
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     backgroundColor: '#2ECCFA',
-    margin: 10,
+    margin: 5,
     padding: 10,
   },
 });

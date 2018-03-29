@@ -16,13 +16,12 @@ import {
 
 const Salsals = (props) => {
   const {
-    userKey,
     salsal,
     date,
     time,
     onGood,
-    loginUser,
   } = props;
+
 
   return (
     <View style={styles.rowStyle}>
@@ -30,27 +29,6 @@ const Salsals = (props) => {
         <Text style={styles.infoText}>{'  '+date+'  '+time}</Text>
         <Text style={styles.salsalText}>{salsal}</Text>
       </View>
-      {(() => {
-        if(loginUser){
-          if(userKey == loginUser){
-            return (
-              <Text>ちんぽ</Text>
-            );
-          }else{
-            return (
-              <TouchableOpacity style={styles.button} onPress={onGood}>
-                <Text style={styles.btntext}>いいね</Text>
-              </TouchableOpacity>
-            );
-          }
-        }else{
-          return (
-            <TouchableOpacity style={styles.button} onPress={onGood}>
-              <Text style={styles.btntext}>いいね</Text>
-            </TouchableOpacity>
-          );
-        }
-      })()}
     </View>
   );
 }
