@@ -34,6 +34,7 @@ export default class timeLinePage extends Component {
     super(props);
 
     this.list = [];
+    this.ref = {};
     this.state = {
       salsalList: this.list,
       listUpdate: 0,
@@ -42,7 +43,7 @@ export default class timeLinePage extends Component {
     };
 
     ref.on('child_added', (data) => {
-      this.list.push(data.val());
+      this.list.unshift(data.val());
       this.setState({salsalList: this.list});
     });
   }
@@ -61,6 +62,7 @@ export default class timeLinePage extends Component {
               ? date.getHours()+':'+date.getMinutes()
               : date.getHours()+':0'+date.getMinutes(),
       });
+      this.ref.setNativeProps({ text: '' });
       this.setState({pushText: ''});
     }
   }
@@ -82,6 +84,7 @@ export default class timeLinePage extends Component {
             autoCapitalize='none'
             maxHeight={40}
             multiline={true}
+            ref={(ref) => { this.ref = ref; }}
             onChangeText={(text) => {this.setState({pushText: text})}}
           />
           <TouchableOpacity onPress={this.sendMessage}>
