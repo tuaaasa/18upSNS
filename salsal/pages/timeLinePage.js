@@ -57,7 +57,7 @@ export default class timeLinePage extends Component {
     if(this.state.pushText.length > 0){
       ref.push().set({
         salsal: this.state.pushText,
-        date: date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate(),
+        date: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
         time: date.getMinutes() > 9
               ? date.getHours()+':'+date.getMinutes()
               : date.getHours()+':0'+date.getMinutes(),

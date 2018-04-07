@@ -16,7 +16,7 @@ export const setSalsal = (salsal, userKey) => {
   const salsalData = {
     userKey: userKey,
     salsal: salsal,
-    date: date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate(),
+    date: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
     time: date.getMinutes() > 9 ? date.getHours()+':'+date.getMinutes() : date.getHours()+':0'+date.getMinutes(),
   };
   FB.ref('salsals').push(salsalData);
