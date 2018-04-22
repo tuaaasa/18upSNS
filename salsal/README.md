@@ -58,3 +58,51 @@ $ react-native -v
 
 この時にreact-native-cli: 2.0.1
 と表示されたらreact-nativeのインストールが成功です。
+
+## 4. setting
+
+以下コマンドを入力.
+
+    npm install
+
+salsal/node_modules/react-native-parallax-view/lib/ParallaxView.js内の以下部分を変更
+
+    'use strict';
+     import PropTypes from 'prop-types'; //add
+
+    var React = require('react');
+    var createReactClass = require('create-react-class'); //add
+    var ReactNative = require('react-native');
+    var {
+        Dimensions,
+        StyleSheet,
+        View,
+        ScrollView,
+        Animated,
+        } = ReactNative;
+    /**
+     * BlurView temporarily removed until semver stuff is set up properly
+     */
+    //var BlurView /* = require('react-native-blur').BlurView */;
+    var ScrollableMixin = require('react-native-scrollable-mixin');
+    var screen = Dimensions.get('window');
+    var ScrollViewPropTypes = ScrollView.propTypes;
+
+    var ParallaxView = createReactClass({ //change
+        mixins: [ScrollableMixin],
+
+        propTypes: {
+            ...ScrollViewPropTypes,
+            windowHeight: PropTypes.number, //change
+            backgroundSource: PropTypes.oneOfType([ //change
+              PropTypes.shape({ //change
+                uri: PropTypes.string, //change
+              }),
+              // Opaque type returned by require('./image.jpg')
+              PropTypes.number, //change
+            ]),
+            header: PropTypes.node, //change
+            blur: PropTypes.string, //change
+            contentInset: PropTypes.object, //change
+        },
+
