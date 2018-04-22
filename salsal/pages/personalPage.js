@@ -17,12 +17,15 @@ import ParallaxView from 'react-native-parallax-view';
 import {
   getSalsal,
 } from './components/database.js';
+import firebase from './components/firebase.js';
 import MyList from './profileTabs/myList.js';
 import GoodList from './profileTabs/goodList.js';
 // import RegisterPage from './RegisterPage.js';
 import header from './components/images/header.png';
 import back from './components/images/back_arrow.png';
 
+const db = firebase.database();
+const ref = db.ref('salsals');
 
 export default class personalPage extends Component {
   constructor(props) {
@@ -33,20 +36,47 @@ export default class personalPage extends Component {
       salsalList: this.list,
       listUpdate: 0,
     };
+  }
 
-    getSalsal((value) => {
-      if(value){
-        this.list.unshift(value);
-        this.setState({
-          salsalList: this.list,
-          listUpdate: this.state.listUpdate + 1,
-        });
+  componentDidMount(){
+    ref.on('child_added', (data) => {
+      this.list.unshift({
+        salsalKey: data.key,
+        userKey: data.val().userKey,
+        toName: data.val().toName,
+        salsal: data.val().salsal,
+        date: data.val().date,
+        time: data.val().time,
+        goodUserList: data.val().goodUserList,
+      });
+      this.setState({
+        salsalList: this.list,
+        listUpdate: this.state.listUpdate + 1,
+      });
+    });
+
+    ref.on('child_changed', (data) => {
+      for(let i=0;i<this.state.salsalList.length;i++){
+        if(this.state.salsalList[i].salsalKey.match(data.key)){
+          this.list.splice(i, 1);
+          this.list.splice(i, 0, {
+            salsalKey: data.key,
+            userKey: data.val().userKey,
+            toName: data.val().toName,
+            salsal: data.val().salsal,
+            date: data.val().date,
+            time: data.val().time,
+            goodUserList: data.val().goodUserList,
+          });
+          this.setState({
+            salsalList: this.list,
+            listUpdate: this.state.listUpdate + 1,
+          });
+          break;
+        }
       }
     });
   }
-  // <View style={styles.pageContainer}>
-  //   <Image style={styles.headerImage} resizeMode='center' source={header}/>
-  // </View>
 
   render() {
     return (
