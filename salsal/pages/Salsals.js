@@ -43,7 +43,7 @@ export default class Salsals extends Component{
   render(){
     if(this.props.goodUserKey.match(this.props.userKey)){
       const swipeoutBtns = [{
-        text: 'Button',
+        text: 'Delete',
         backgroundColor: 'red',
         onPress: () => {
           removeSalsal(this.props.salsalKey);
