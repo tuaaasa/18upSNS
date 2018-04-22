@@ -5,60 +5,71 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image,
+  Dimensions,
+  Platform,
 } from 'react-native';
 import {
     Actions,
 } from 'react-native-router-flux';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import ParallaxView from 'react-native-parallax-view';
 import {
-  checkLogin,
-  setPersonalInfo,
-  loginUser,
-  logoutUser,
-  getLoginUser,
-  getPersonalInfo,
+  getSalsal,
 } from './components/database.js';
+import MyList from './profileTabs/myList.js';
+import GoodList from './profileTabs/goodList.js';
 // import RegisterPage from './RegisterPage.js';
+import header from './components/images/header.png';
+import back from './components/images/back_arrow.png';
 
 
 export default class personalPage extends Component {
   constructor(props) {
     super(props);
 
+    this.list = [];
     this.state = {
-      loginState: false,
-      personalInfo: null,
-    }
-    checkLogin((value) => {
+      salsalList: this.list,
+      listUpdate: 0,
+    };
+
+    getSalsal((value) => {
       if(value){
-        getLoginUser((userKey) => {
-          getPersonalInfo(userKey, (info) => {
-            this.setState({
-              loginState: true,
-              personalInfo: info,
-            });
-          });
+        this.list.unshift(value);
+        this.setState({
+          salsalList: this.list,
+          listUpdate: this.state.listUpdate + 1,
         });
       }
     });
   }
+  // <View style={styles.pageContainer}>
+  //   <Image style={styles.headerImage} resizeMode='center' source={header}/>
+  // </View>
 
   render() {
     return (
-      <View style={styles.pageContainer}>
-        {(() => {
-          if(this.state.loginState){
-            const info = this.state.personalInfo;
-            return (
-              <View>
-                <Text style={styles.levelText}>{'Lv.'+info.level+'  '+info.userName}</Text>
-                <Text style={styles.commentText}>{info.comment}</Text>
-              </View>
-            );
-          }else{
-            <Text style={styles.commentText}>読み込みに失敗しました</Text>
-          }
-        })()}
-      </View>
+      <ParallaxView
+        style={{backgroundColor: '#fff'}}
+        backgroundSource={header}
+        windowHeight={120}
+        header={(
+          <View style={styles.header}>
+            <Text style={styles.headerText}>{'ID : '+this.props.userKey}</Text>
+            <View style={styles.backButton}>
+              <TouchableOpacity onPress={Actions.timeLine}>
+                <Image style={styles.image} source={back}/>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      >
+        <ScrollableTabView>
+          <MyList tabLabel='投稿' salsalList={this.state.salsalList} userKey={this.props.userKey}/>
+          <GoodList tabLabel='いいね' salsalList={this.state.salsalList} userKey={this.props.userKey}/>
+        </ScrollableTabView>
+      </ParallaxView>
     );
   }
 }
@@ -66,30 +77,33 @@ export default class personalPage extends Component {
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    alignItems: 'stretch',
+    // justifyContent: 'center',
+    // backgroundColor: '#F5FCFF',
+    alignItems: 'flex-start',
   },
-  levelText: {
-    margin: 10,
-    fontSize: 20,
+  header: {
+    marginTop: (Platform.OS === 'ios') ? 20 : 10,
+    flexDirection: 'row',
+  },
+  headerImage: {
+    width: Dimensions.get('window').width,
+    height: 120,
+  },
+  headerText: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: 'bold',
     textAlign: 'center',
+    marginTop: 40,
   },
-  commentText: {
-    fontSize: 20,
-    textAlign: 'center',
+  image: {
+    width: 20,
+    height: 20,
   },
-  textInput: {
-    backgroundColor: '#FFF',
-    padding: 10,
-    margin: 10,
-  },
-  buttonText: {
-    fontSize: 20,
-    textAlign: 'center',
-    backgroundColor: '#2ECCFA',
-    margin: 10,
-    padding: 10,
-  },
+  backButton: {
+    position: 'absolute',
+    zIndex: 1,
+    left: 5,
+    top: 5,
+  }
 });

@@ -11,10 +11,11 @@ export const makeRandomNum = () => {
 // ----------------------------------------------
 //                    firebase
 // ----------------------------------------------
-export const setSalsal = (salsal, userKey) => {
+export const setSalsal = (to, salsal, userKey) => {
   let date = new Date();
   const salsalData = {
     userKey: userKey,
+    toName: to,
     salsal: salsal,
     date: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
     time: date.getMinutes() > 9 ? date.getHours()+':'+date.getMinutes() : date.getHours()+':0'+date.getMinutes(),
@@ -26,76 +27,94 @@ export const getSalsal = (onSalsal) => {
   // const list = [];
   FB.ref('salsals').on('child_added', (data) => {
     onSalsal({
+      salsalKey: data.key,
       userKey: data.val().userKey,
+      toName: data.val().toName,
       salsal: data.val().salsal,
       date: data.val().date,
       time: data.val().time,
+      goodUserList: data.val().goodUserList,
     });
   });
   // onSalsal(list);
 }
 
-export const setPersonalInfo = (userName, userPass, userKey) => {
+export const setPersonalInfo = (userKey) => {
   const userData = {
-    userName: userName,
-    userPass: userPass,
-    comment: 'よろしくお願いします。',
-    level: 0,
+    goodCount: 0,
   };
   const key = FB.ref('users').push(userData).key;
-  userKey(key);
-}
-
-export const getPersonalKey = (userName, userPass, userKey) => {
-  let key = false;
-  FB.ref('users').on('child_added', (data) => {
-    if(userName == data.val().userName && userPass == data.val().userPass){
-      userKey(data.key);
-    }
+  AsyncStorage.setItem(JSON.stringify('userId'), JSON.stringify(key)).then(() => {
+    userKey(key);
   });
-  return userKey(false);
 }
 
-export const getPersonalInfo = (userKey, onPersonalInfo) => {
-  FB.ref('users').on('child_added', (data) => {
-    if(userKey == data.key){
-      const info = {
-        userName: data.val().userName,
-        comment: data.val().comment,
-        level: data.val().level,
-      };
-      onPersonalInfo(info);
+export const setGood = (userKey, salsalKey) => {
+  FB.ref('salsals/'+salsalKey+'/goodUserList').once('value', (data) => {
+    let update = {};
+    if(!data.val()){
+      update['salsals/'+salsalKey+'/goodUserList'] = [userKey];
+      FB.ref().update(update);
+    }else{
+      const goodUserList = [].concat(data.val());
+      if(goodUserList.indexOf(userKey) < 0){
+        goodUserList.push(userKey);
+      }
+      update['salsals/'+salsalKey+'/goodUserList'] = goodUserList;
+      FB.ref().update(update);
     }
   });
 }
 
-export const keyToName = (userKey, userName) => {
-  FB.ref('users').on('child_added', (data) => {
-    if(userKey == data.key){
-      userName(data.val().userName);
-    }
-  });
+// export const getPersonalKey = (userName, userPass, userKey) => {
+//   let key = false;
+//   FB.ref('users').on('child_added', (data) => {
+//     if(userName == data.val().userName && userPass == data.val().userPass){
+//       userKey(data.key);
+//     }
+//   });
+//   return userKey(false);
+// }
 
-}
+// export const getPersonalInfo = (userKey, onPersonalInfo) => {
+//   FB.ref('users').on('child_added', (data) => {
+//     if(userKey == data.key){
+//       const info = {
+//         userName: data.val().userName,
+//         comment: data.val().comment,
+//         level: data.val().level,
+//       };
+//       onPersonalInfo(info);
+//     }
+//   });
+// }
 
+// export const keyToName = (userKey, userName) => {
+//   FB.ref('users').on('child_added', (data) => {
+//     if(userKey == data.key){
+//       userName(data.val().userName);
+//     }
+//   });
+//
+// }
 
 // ----------------------------------------------
 //                    AsyncStorage
 // ----------------------------------------------
-export const loginUser = (userKey, onCallback) => {
-  AsyncStorage.setItem(JSON.stringify('loginUser'), JSON.stringify(userKey)).then(() => {
-    onCallback(true);
-  });
-}
+// export const loginUser = (userKey, onCallback) => {
+//   AsyncStorage.setItem(JSON.stringify('loginUser'), JSON.stringify(userKey)).then(() => {
+//     onCallback(true);
+//   });
+// }
 
 export const logoutUser = () => {
-  AsyncStorage.removeItem(JSON.stringify('loginUser'));
+  AsyncStorage.removeItem(JSON.stringify('userId'));
 }
 
 export const checkLogin = (onCheckLogin) => {
-  AsyncStorage.getItem(JSON.stringify('loginUser')).then((value) => {
+  AsyncStorage.getItem(JSON.stringify('userId')).then((value) => {
     if(value){
-      onCheckLogin(true);
+      onCheckLogin(JSON.parse(value));
     }
     else{
       onCheckLogin(false);
@@ -103,15 +122,15 @@ export const checkLogin = (onCheckLogin) => {
   });
 }
 
-export const getLoginUser = (onUserKey) => {
-  AsyncStorage.getItem(JSON.stringify('loginUser')).then((userKey) => {
-    if(userKey){
-      onUserKey(JSON.parse(userKey));
-    }else{
-      onUserKey(false);
-    }
-  });
-}
+// export const getLoginUser = (onUserKey) => {
+//   AsyncStorage.getItem(JSON.stringify('loginUser')).then((userKey) => {
+//     if(userKey){
+//       onUserKey(JSON.parse(userKey));
+//     }else{
+//       onUserKey(false);
+//     }
+//   });
+// }
 
 export const setLocalSalsal = (list) => {
   AsyncStorage.removeItem(JSON.stringify('localSalsal')).then(() => {

@@ -12,27 +12,48 @@ import {
 } from 'react-native-router-flux';
 import {
   checkLogin,
+  setPersonalInfo,
 } from './components/database.js';
 
 export default class startPage extends Component {
   constructor(props) {
     super(props);
 
-    checkLogin((value) => {
-      if(value){
-        Actions.timeLine();
+    checkLogin((key) => {
+      if(key){
+        Actions.personalPage({
+          userKey: key,
+        });
+        Actions.timeLine({
+          userKey: key,
+        });
       }
     });
   }
+
+  _registerAction = () => {
+    setPersonalInfo((key) => {
+      Actions.personalPage({
+        userKey: key,
+      });
+      Actions.timeLine({
+        userKey: key,
+      });
+    });
+  }
+
+  // _loginAction = () => {
+  //
+  // }
 
   render() {
     return (
       <View style={styles.pageContainer}>
         <TouchableOpacity style={{ margin: 40 }} onPress={Actions.timeLine}>
-          <Text style={styles.buttonText}>ログイン</Text>
+          <Text style={styles.buttonText}>アプリ以外で利用されている方</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ margin: 40 }} onPress={Actions.timeLine}>
-          <Text style={styles.buttonText}>新規登録</Text>
+        <TouchableOpacity style={{ margin: 40 }} onPress={this._registerAction}>
+          <Text style={styles.buttonText}>新規</Text>
         </TouchableOpacity>
       </View>
     );

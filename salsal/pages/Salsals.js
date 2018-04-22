@@ -1,44 +1,86 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
-import {
-  keyToName,
-} from './components/database.js';
 import {
   checkLogin,
   getLoginUser,
 } from './components/database.js';
+import firebase from './components/firebase.js';
+import good_before from './components/images/good_before.png';
+import good_after from './components/images/good_after.png';
 
+const db = firebase.database();
+const ref = db.ref('salsals');
 
-const Salsals = (props) => {
-  const {
-    salsal,
-    date,
-    time,
-    onGood,
-  } = props;
+export default class Salsals extends Component{
+  constructor(props){
+    super(props);
 
+    this.list = [];
+    this.state = {
+      goodUserList: this.list,
+    }
+  }
 
-  return (
-    <View style={styles.rowStyle}>
-      <View style={styles.textStetas}>
-        <Text style={styles.infoText}>{'  '+date+'  '+time}</Text>
-        <Text style={styles.salsalText}>{salsal}</Text>
+  // componentDidMount(){
+  //   console.log(this.props.salsalKey);
+  //   db.ref('salsals/'+this.props.salsalKey+'/goodUserList').on('child_added', (data) => {
+  //     // console.log(data.val());
+  //     this.list.push(data.val());
+  //     this.setState({
+  //       goodUserList: this.list,
+  //     });
+  //   })
+  // }
+
+  render(){
+    return (
+      <View style={styles.rowStyle}>
+        <View style={styles.textStetas}>
+          <Text style={styles.infoText}>{'  '+this.props.date+'  '+this.props.time}</Text>
+          <Text style={styles.salsalText}>{this.props.toName+'へ'}</Text>
+          <Text style={styles.salsalText}>{this.props.salsal}</Text>
+        </View>
+        {(() => {
+          if(this.props.goodUserList){
+            if(this.props.goodUserList.indexOf(this.props.goodUserKey) >= 0){
+              return(
+                <View style={styles.good}>
+                  <Image style={styles.image} source={good_after}/>
+                  <Text>{this.props.goodUserList.length}</Text>
+                </View>
+              );
+            }else{
+              return(
+                <TouchableOpacity style={styles.good} onPress={this.props.onGood}>
+                  <Image style={styles.image} source={good_before}/>
+                  <Text>{this.props.goodUserList.length}</Text>
+                </TouchableOpacity>
+              );
+            }
+          }else{
+            return(
+              <TouchableOpacity style={styles.good} onPress={this.props.onGood}>
+                <Image style={styles.image} source={good_before}/>
+                <Text>0</Text>
+              </TouchableOpacity>
+            );
+          }
+        })()}
       </View>
-    </View>
-  );
+    );
+  }
 }
-
-export default Salsals;
 
 const styles = StyleSheet.create({
   rowStyle: {
     borderColor: '#CCC',
-    borderWidth: 2,
+    borderWidth: 1,
     flexDirection: 'row',
     backgroundColor: '#FFF',
   },
@@ -60,13 +102,13 @@ const styles = StyleSheet.create({
     flex: 3,
     color: '#333',
   },
-  button: {
+  good: {
     flex: 1,
-    backgroundColor: '#87cefa',
-    padding: 10,
-    margin: 20,
+    margin: 15,
+    alignItems: 'flex-end',
   },
-  btntext: {
-    textAlign: 'center',
+  image: {
+    width: 30,
+    height: 30,
   },
 });

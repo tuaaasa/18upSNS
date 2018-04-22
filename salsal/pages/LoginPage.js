@@ -25,8 +25,7 @@ export default class LoginPage extends Component {
       if(userKey){
         loginUser(userKey, (value) => {
           if(value){
-            Actions.personalPage();
-            Actions.refresh();
+            Actions.timeLine();
           }
         });
       }else{
