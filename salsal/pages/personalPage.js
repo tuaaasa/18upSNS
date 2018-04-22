@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,
   Platform,
+  FlatList,
 } from 'react-native';
 import {
     Actions,
@@ -20,6 +21,7 @@ import {
 import firebase from './components/firebase.js';
 import MyList from './profileTabs/myList.js';
 import GoodList from './profileTabs/goodList.js';
+import Salsals from './Salsals.js';
 // import RegisterPage from './RegisterPage.js';
 import header from './components/images/header.png';
 import back from './components/images/back_arrow.png';
@@ -78,7 +80,24 @@ export default class personalPage extends Component {
     });
   }
 
+  // good = (index) => () => {
+  //   setGood(this.props.userKey, this.state.salsalList[index].salsalKey);
+  //   // いいね関数をいれる
+  // }
+
   render() {
+    const myList = [];
+    const goodList = [];
+    for(let i=0;i<this.state.salsalList.length;i++){
+      if(this.state.salsalList[i].goodUserList){
+        if(this.state.salsalList[i].goodUserList.indexOf(this.props.userKey) >= 0){
+          goodList.push(this.state.salsalList[i]);
+        }
+      }
+      if(this.state.salsalList[i].userKey.match(this.props.userKey)){
+        myList.push(this.state.salsalList[i]);
+      }
+    }
     return (
       <ParallaxView
         style={{backgroundColor: '#fff'}}
@@ -96,8 +115,22 @@ export default class personalPage extends Component {
         )}
       >
         <ScrollableTabView>
-          <MyList tabLabel='投稿' salsalList={this.state.salsalList} userKey={this.props.userKey}/>
-          <GoodList tabLabel='いいね' salsalList={this.state.salsalList} userKey={this.props.userKey}/>
+          <FlatList
+            tabLabel='投稿'
+            style={{flex: 1}}
+            data={myList}
+            execData={this.state.listUpdate}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
+          />
+          <FlatList
+            tabLabel='いいね'
+            style={{flex: 1}}
+            data={goodList}
+            execData={this.state.listUpdate}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
+          />
         </ScrollableTabView>
       </ParallaxView>
     );

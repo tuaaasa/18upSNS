@@ -94,10 +94,10 @@ export default class timeLinePage extends Component {
     // });
   }
 
-  good = (index) => () => {
-    setGood(this.props.userKey, this.state.salsalList[index].salsalKey);
-    // いいね関数をいれる
-  }
+  // good = (index) => () => {
+  //   setGood(this.props.userKey, this.state.salsalList[index].salsalKey);
+  //   // いいね関数をいれる
+  // }
 
   sendMessage = () => {
     if(this.state.pushText.length > 0){
@@ -182,7 +182,7 @@ export default class timeLinePage extends Component {
           data={this.state.salsalList}
           execData={this.state.listUpdate}
           keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} onGood={this.good(index)} {...item} />}
+          renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
         />
         <View style={styles.sendButton}>
           <TouchableOpacity onPress={this.modalSwitch}>

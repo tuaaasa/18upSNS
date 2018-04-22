@@ -7,8 +7,7 @@ import {
   Image,
 } from 'react-native';
 import {
-  checkLogin,
-  getLoginUser,
+  setGood,
 } from './components/database.js';
 import firebase from './components/firebase.js';
 import good_before from './components/images/good_before.png';
@@ -20,11 +19,6 @@ const ref = db.ref('salsals');
 export default class Salsals extends Component{
   constructor(props){
     super(props);
-
-    this.list = [];
-    this.state = {
-      goodUserList: this.list,
-    }
   }
 
   // componentDidMount(){
@@ -37,6 +31,12 @@ export default class Salsals extends Component{
   //     });
   //   })
   // }
+
+  good = () => {
+    console.log(this.props.salsalKey);
+    setGood(this.props.goodUserKey, this.props.salsalKey);
+    // いいね関数をいれる
+  }
 
   render(){
     return (
@@ -57,7 +57,7 @@ export default class Salsals extends Component{
               );
             }else{
               return(
-                <TouchableOpacity style={styles.good} onPress={this.props.onGood}>
+                <TouchableOpacity style={styles.good} onPress={this.good}>
                   <Image style={styles.image} source={good_before}/>
                   <Text>{this.props.goodUserList.length}</Text>
                 </TouchableOpacity>
@@ -65,7 +65,7 @@ export default class Salsals extends Component{
             }
           }else{
             return(
-              <TouchableOpacity style={styles.good} onPress={this.props.onGood}>
+              <TouchableOpacity style={styles.good} onPress={this.good}>
                 <Image style={styles.image} source={good_before}/>
                 <Text>0</Text>
               </TouchableOpacity>
