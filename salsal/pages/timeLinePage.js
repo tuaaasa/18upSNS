@@ -88,10 +88,18 @@ export default class timeLinePage extends Component {
       }
     });
 
-    // ref.on('child_removed', (data) => {
-    //   this.list.unshift(data.val());
-    //   this.setState({salsalList: this.list});
-    // });
+    ref.on('child_removed', (data) => {
+      for(let i=0;i<this.state.salsalList.length;i++){
+        if(this.state.salsalList[i].salsalKey.match(data.key)){
+          this.list.splice(i, 1);
+          this.setState({
+            salsalList: this.list,
+            listUpdate: this.state.listUpdate + 1,
+          });
+          break;
+        }
+      }
+    });
   }
 
   // good = (index) => () => {

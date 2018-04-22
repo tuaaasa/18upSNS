@@ -39,6 +39,10 @@ export const getSalsal = (onSalsal) => {
   // onSalsal(list);
 }
 
+export const removeSalsal = (salsalKey) => {
+  FB.ref('salsals/'+salsalKey).remove();
+}
+
 export const setPersonalInfo = (userKey) => {
   const userData = {
     goodCount: 0,

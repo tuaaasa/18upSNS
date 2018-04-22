@@ -19,8 +19,6 @@ import {
   getSalsal,
 } from './components/database.js';
 import firebase from './components/firebase.js';
-import MyList from './profileTabs/myList.js';
-import GoodList from './profileTabs/goodList.js';
 import Salsals from './Salsals.js';
 // import RegisterPage from './RegisterPage.js';
 import header from './components/images/header.png';
@@ -78,6 +76,19 @@ export default class personalPage extends Component {
         }
       }
     });
+
+    ref.on('child_removed', (data) => {
+      for(let i=0;i<this.state.salsalList.length;i++){
+        if(this.state.salsalList[i].salsalKey.match(data.key)){
+          this.list.splice(i, 1);
+          this.setState({
+            salsalList: this.list,
+            listUpdate: this.state.listUpdate + 1,
+          });
+          break;
+        }
+      }
+    });
   }
 
   // good = (index) => () => {
@@ -114,7 +125,7 @@ export default class personalPage extends Component {
           </View>
         )}
       >
-        <ScrollableTabView>
+        <ScrollableTabView locked={true}>
           <FlatList
             tabLabel='投稿'
             style={{flex: 1}}
