@@ -128,7 +128,7 @@ export default class personalPage extends Component {
         <ScrollableTabView locked={true}>
           <FlatList
             tabLabel='投稿'
-            style={{flex: 1}}
+            // style={{flex: 1}}
             data={myList}
             execData={this.state.listUpdate}
             keyExtractor={(item, index) => index}
@@ -136,7 +136,7 @@ export default class personalPage extends Component {
           />
           <FlatList
             tabLabel='いいね'
-            style={{flex: 1}}
+            // style={{flex: 1}}
             data={goodList}
             execData={this.state.listUpdate}
             keyExtractor={(item, index) => index}
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
     // justifyContent: 'center',
-    // backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF',
     alignItems: 'flex-start',
   },
   header: {
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   image: {
-    width: 20,
-    height: 20,
+    width: 26,
+    height: 26,
   },
   backButton: {
     position: 'absolute',

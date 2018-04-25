@@ -9,6 +9,7 @@ import {
   Dimensions,
   ActivityIndicator,
   Image,
+  ImageBackground,
   Modal,
   Platform,
 } from 'react-native';
@@ -27,6 +28,7 @@ import {
 import firebase from './components/firebase.js';
 import send from './components/images/send_a.png';
 import back from './components/images/back.png';
+import header from './components/images/header.png';
 
 const db = firebase.database();
 const ref = db.ref('salsals');
@@ -147,57 +149,59 @@ export default class timeLinePage extends Component {
   render() {
     return (
       <View style={styles.pageContainer}>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-        >
-          <View style={styles.pageContainer}>
-            <View style={styles.navber}>
-              <TouchableOpacity onPress={this.back}>
-                <Image style={styles.navImage} source={back}/>
-              </TouchableOpacity>
-              <Text style={styles.navText}>投稿</Text>
-              <TouchableOpacity onPress={this.sendMessage}>
-                <Image style={styles.navImage} source={send}/>
-              </TouchableOpacity>
+        <ImageBackground style={{flex: 1}} resizeMode={'stretch'} source={header}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}
+          >
+            <View style={styles.pageContainer}>
+              <View style={styles.navber}>
+                <TouchableOpacity onPress={this.back}>
+                  <Image style={styles.navImage} source={back}/>
+                </TouchableOpacity>
+                <Text style={styles.navText}>投稿</Text>
+                <TouchableOpacity onPress={this.sendMessage}>
+                  <Image style={styles.navImage} source={send}/>
+                </TouchableOpacity>
+              </View>
+              <TextInput
+                style={styles.textInputUnderBar}
+                placeholder='To'
+                autoCapitalize='none'
+                multiline={false}
+                ref={(ref) => { this.to = ref; }}
+                onChangeText={(text) => {this.setState({pushTo: text})}}
+              />
+              <TextInput
+                style={styles.textInputMain}
+                placeholder='本文'
+                autoCapitalize='none'
+                multiline={true}
+                ref={(ref) => { this.main = ref; }}
+                onChangeText={(text) => {this.setState({pushText: text})}}
+              />
             </View>
-            <TextInput
-              style={styles.textInputUnderBar}
-              placeholder='To'
-              autoCapitalize='none'
-              multiline={false}
-              ref={(ref) => { this.to = ref; }}
-              onChangeText={(text) => {this.setState({pushTo: text})}}
-            />
-            <TextInput
-              style={styles.textInputMain}
-              placeholder='本文'
-              autoCapitalize='none'
-              multiline={true}
-              ref={(ref) => { this.main = ref; }}
-              onChangeText={(text) => {this.setState({pushText: text})}}
-            />
+          </Modal>
+          {(() => {
+            if(this.state.salsalList.length == 0){
+              return(<ActivityIndicator size="large"/>);
+            }
+          })()}
+          <FlatList
+            style={{flex: 1}}
+            data={this.state.salsalList}
+            execData={this.state.listUpdate}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
+          />
+          <View style={styles.sendButton}>
+            <TouchableOpacity onPress={this.modalSwitch}>
+              <Image style={styles.image} source={send}/>
+            </TouchableOpacity>
           </View>
-        </Modal>
-        {(() => {
-          if(this.state.salsalList.length == 0){
-            return(<ActivityIndicator size="large"/>);
-          }
-        })()}
-        <FlatList
-          style={{flex: 1}}
-          data={this.state.salsalList}
-          execData={this.state.listUpdate}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
-        />
-        <View style={styles.sendButton}>
-          <TouchableOpacity onPress={this.modalSwitch}>
-            <Image style={styles.image} source={send}/>
-          </TouchableOpacity>
-        </View>
-        <KeyboardSpacer/>
+          <KeyboardSpacer/>
+        </ImageBackground>
       </View>
     );
   }
