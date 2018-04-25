@@ -105,3 +105,7 @@ salsal/node_modules/react-native-parallax-view/lib/ParallaxView.js内の以下�
             blur: PropTypes.string, //change
             contentInset: PropTypes.object, //change
         },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 74bc0786a6f9a67c47454cd8e635b7d3839b6e0c
