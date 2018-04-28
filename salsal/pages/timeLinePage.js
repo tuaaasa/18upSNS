@@ -12,6 +12,7 @@ import {
   ImageBackground,
   Modal,
   Platform,
+  Alert,
 } from 'react-native';
 import {
     Actions,
@@ -26,9 +27,10 @@ import {
   setGood,
 } from './components/database.js';
 import firebase from './components/firebase.js';
-import send from './components/images/send_a.png';
+import send from './components/images/send.png';
 import back from './components/images/back.png';
 import header from './components/images/header.png';
+import letter from './components/images/letter.png';
 
 const db = firebase.database();
 const ref = db.ref('salsals');
@@ -113,26 +115,57 @@ export default class timeLinePage extends Component {
     if(this.state.pushText.length > 0){
       let pushTo = this.state.pushTo;
       if(pushTo.length == 0){
-        pushTo = 'ちんぽ';
+        Alert.alert(
+          '宛先を教えてください',
+          '',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => this.setState({
+                pushText: '',
+                modalVisible: !this.state.modalVisible,
+              }),
+              style: 'cancel',
+            },
+            {text: 'OK'},
+          ],
+          { cancelable: false },
+        );
+      }else{
+        ref.push().set({
+          salsal: this.state.pushText,
+          toName: pushTo,
+          userKey: this.props.userKey,
+          date: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
+          time: date.getMinutes() > 9
+                ? date.getHours()+':'+date.getMinutes()
+                : date.getHours()+':0'+date.getMinutes(),
+        });
+        this.to.setNativeProps({ text: '' });
+        this.main.setNativeProps({ text: '' });
+        this.setState({
+          pushText: '',
+          pushTo: '',
+          modalVisible: !this.state.modalVisible,
+        });
       }
-      ref.push().set({
-        salsal: this.state.pushText,
-        toName: pushTo,
-        userKey: this.props.userKey,
-        date: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
-        time: date.getMinutes() > 9
-              ? date.getHours()+':'+date.getMinutes()
-              : date.getHours()+':0'+date.getMinutes(),
-      });
-      this.to.setNativeProps({ text: '' });
-      this.main.setNativeProps({ text: '' });
-      this.setState({
-        pushText: '',
-        pushTo: '',
-        modalVisible: !this.state.modalVisible,
-      });
     }else{
-      // アラート
+      Alert.alert(
+        '本文を入力してください',
+        '',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => this.setState({
+              pushTo: '',
+              modalVisible: !this.state.modalVisible,
+            }),
+            style: 'cancel',
+          },
+          {text: 'OK'},
+        ],
+        { cancelable: false },
+      );
     }
   }
 
@@ -160,14 +193,14 @@ export default class timeLinePage extends Component {
                 <TouchableOpacity onPress={this.back}>
                   <Image style={styles.navImage} source={back}/>
                 </TouchableOpacity>
-                <Text style={styles.navText}>投稿</Text>
+                <Text style={styles.navText}>メッセージ</Text>
                 <TouchableOpacity onPress={this.sendMessage}>
                   <Image style={styles.navImage} source={send}/>
                 </TouchableOpacity>
               </View>
               <TextInput
                 style={styles.textInputUnderBar}
-                placeholder='To'
+                placeholder='Dear'
                 autoCapitalize='none'
                 multiline={false}
                 ref={(ref) => { this.to = ref; }}
@@ -211,14 +244,14 @@ const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
     // backgroundColor: '#F5FCFF',
-    // backgroundColor: '#000',
+    backgroundColor: '#fdf5e6',
   },
   navber: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: (Platform.OS === 'ios') ? 20 : 10,
     height: 40,
-    borderBottomWidth: 0.3,
+    borderBottomWidth: 1,
     borderBottomColor: '#d3d3d3',
     // top: (Platform.OS === 'ios') ? 64 : 54,
   },
@@ -227,6 +260,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+    backgroundColor: 'transparent',
   },
   navImage: {
     margin: 10,
@@ -238,10 +272,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.3,
     borderColor: '#d3d3d3',
     fontSize: 20,
+    backgroundColor: 'transparent',
   },
   textInputMain: {
     padding: 10,
-    fontSize: 20,
+    fontSize: 22,
+    backgroundColor: 'transparent',
   },
   // text: {
   //   fontSize: 20,
@@ -269,10 +305,14 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
+  // letterImage: {
+  //   width: Dimensions.get('window').width,
+  //   height: Dimensions.get('window').height,
+  // },
   sendButton: {
     position: 'absolute',
     zIndex: 1,
-    top: Dimensions.get('window').height-155,
-    left: Dimensions.get('window').width-100,
+    top: Dimensions.get('window').height-165,
+    left: Dimensions.get('window').width-110,
   }
 });
