@@ -1,0 +1,144 @@
+import React, { Component } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Modal,
+  Alert,
+} from 'react-native';
+import {
+    Actions,
+} from 'react-native-router-flux';
+import {
+  checkLogin,
+  setPersonalInfo,
+  checkUserId,
+} from './components/database.js';
+
+export default class startPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.id = {};
+    this.state = {
+      modalVisible: false,
+      pushID: '',
+      validation: '',
+    };
+
+    checkLogin((key) => {
+      if(key){
+        Actions.personalPage({
+          userKey: key,
+        });
+        Actions.timeLine({
+          userKey: key,
+        });
+      }
+    });
+  }
+
+  _registerAction = () => {
+    setPersonalInfo((key) => {
+      Actions.personalPage({
+        userKey: key,
+      });
+      Actions.timeLine({
+        userKey: key,
+      });
+    });
+  }
+
+  _openForm = () => {
+    this.setState({modalVisible: !this.state.modalVisible});
+  }
+
+  _loginAction = () => {
+    checkUserId(this.state.pushID, (value) => {
+      if(value){
+        Actions.personalPage({
+          userKey: this.state.pushID,
+        });
+        Actions.timeLine({
+          userKey: this.state.pushID,
+        });
+        this.id.setNativeProps({ text: '' });
+        this.setState({
+          validation: '',
+          modalVisible: !this.state.modalVisible,
+        });
+      }else{
+        this.setState({validation: 'Not found'});
+      }
+    });
+  }
+
+  render() {
+    return (
+      <View style={styles.pageContainer}>
+        <Modal
+          animationType='slide'
+          transparent={false}
+          visible={this.state.modalVisible}
+        >
+          <View style={styles.pageContainer}>
+            <Text style={styles.text, {color: 'red', paddingHorizontal: 20}}>{this.state.validation}</Text>
+            <TextInput
+              style={styles.textInputUnderBar}
+              placeholder='ID'
+              autoCapitalize='none'
+              multiline={false}
+              autoFocus={true}
+              ref={(ref) => { this.id = ref; }}
+              onChangeText={(text) => {this.setState({pushID: text})}}
+            />
+            <TouchableOpacity style={styles.loginBotton} onPress={this._loginAction}>
+              <Text style={styles.buttonText}>ログイン</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <TouchableOpacity style={{ margin: 40 }} onPress={this._openForm}>
+          <Text style={styles.buttonText}>アプリ以外で利用されている方</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ margin: 40 }} onPress={this._registerAction}>
+          <Text style={styles.buttonText}>新規</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  pageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    alignItems: 'stretch',
+    paddingHorizontal: 20,
+  },
+  buttonText: {
+    fontSize: 20,
+    textAlign: 'center',
+    backgroundColor: '#2ECCFA',
+    margin: 10,
+    padding: 10,
+  },
+  textInputUnderBar: {
+    padding: 10,
+    borderBottomWidth: 0.3,
+    borderColor: '#d3d3d3',
+    fontSize: 20,
+    backgroundColor: 'transparent',
+  },
+  loginBotton: {
+    margin: 40,
+  },
+  text: {
+    textAlign: 'center',
+    backgroundColor: 'red',
+  },
+});
