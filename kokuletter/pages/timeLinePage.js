@@ -107,6 +107,7 @@ export default class timeLinePage extends Component {
   }
 
   sendMessage = () => {
+    // アラート→バリデーションに変更
     if(this.state.pushText.length > 0){
       let pushTo = this.state.pushTo;
       if(pushTo.length == 0){
