@@ -30,7 +30,7 @@ import DrawerContent from './pages/components/DrawerContent.js';
 
 class App extends Component {
   render() {
-    logoutUser();
+    // logoutUser();
     return (
       <Router>
         <Scene key="root" hideNavBar={ true }>

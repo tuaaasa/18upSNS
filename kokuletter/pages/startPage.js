@@ -95,15 +95,15 @@ export default class startPage extends Component {
               ref={(ref) => { this.id = ref; }}
               onChangeText={(text) => {this.setState({pushID: text})}}
             />
-            <TouchableOpacity style={styles.loginBotton} onPress={this._loginAction}>
+            <TouchableOpacity style={styles.button} onPress={this._loginAction}>
               <Text style={styles.buttonText}>ログイン</Text>
             </TouchableOpacity>
           </View>
         </Modal>
-        <TouchableOpacity style={{ margin: 40 }} onPress={this._openForm}>
+        <TouchableOpacity style={styles.button} onPress={this._openForm}>
           <Text style={styles.buttonText}>アプリ以外で利用されている方</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ margin: 40 }} onPress={this._registerAction}>
+        <TouchableOpacity style={styles.button} onPress={this._registerAction}>
           <Text style={styles.buttonText}>新規</Text>
         </TouchableOpacity>
       </View>
@@ -123,9 +123,15 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     textAlign: 'center',
-    backgroundColor: '#2ECCFA',
     margin: 10,
     padding: 10,
+    shadowOpacity: 0.5,
+    shadowOffset: {width: 0, height: 0},
+    shadowColor: '#000',
+    borderWidth: 0.5,
+    borderColor: '#d3d3d3',
+    borderRadius: 2,
+    backgroundColor: '#FFF',
   },
   textInputUnderBar: {
     padding: 10,
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: 'transparent',
   },
-  loginBotton: {
+  button: {
     margin: 40,
   },
   text: {
