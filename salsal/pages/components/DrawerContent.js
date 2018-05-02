@@ -29,7 +29,6 @@ export default class DrawerContent extends Component {
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    // justifyContent: 'center',
     marginTop: (Platform.OS === 'ios') ? 20 : 10,
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
