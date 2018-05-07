@@ -51,6 +51,7 @@ export default class timeLinePage extends Component {
       pushText: '',
       modalVisible: false,
     };
+    console.log(this.props.userKey);
   }
 
   componentDidMount(){
@@ -172,6 +173,7 @@ export default class timeLinePage extends Component {
   }
 
   modalSwitch = () => {
+    // Actions.pushMessage();
     this.setState({modalVisible: !this.state.modalVisible});
   }
 
@@ -181,7 +183,7 @@ export default class timeLinePage extends Component {
         <ImageBackground style={{flex: 1}} resizeMode={'stretch'} source={header}>
           <Modal
             animationType='slide'
-            transparent={false}
+            transparent={true}
             visible={this.state.modalVisible}
           >
             <View style={styles.pageContainer}>

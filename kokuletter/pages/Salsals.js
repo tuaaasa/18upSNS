@@ -36,7 +36,6 @@ export default class Salsals extends Component{
   // }
 
   good = () => {
-    console.log(this.props.salsalKey);
     setGood(this.props.goodUserKey, this.props.salsalKey);
     // いいね関数をいれる
   }

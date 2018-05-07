@@ -25,7 +25,9 @@ import chat from './pages/chat.js';
 import themeNavBar from './pages/components/themeNavBar.js';
 import startPage from './pages/startPage.js';
 import personalPage from './pages/personalPage.js';
+// import pushMessage from './pages/pushMessage.js';
 import MenuIcon from './pages/components/images/menu_burger.png';
+// import send from './pages/components/images/send.png';
 import DrawerContent from './pages/components/DrawerContent.js';
 
 class App extends Component {
@@ -39,10 +41,10 @@ class App extends Component {
             drawerWidth={ 300 }
             drawerImage={MenuIcon}
           >
-            <Scene key='timeLine' component={timeLine} title="タイムライン"/>
-            <Scene key='personalPage' hideNavBar={ true } component={personalPage} title='プロフィール'/>
+            <Scene key='timeLine' component={timeLine} title='タイムライン'/>
+            <Scene key='personalPage' hideNavBar={ true } component={personalPage}/>
           </Drawer>
-          <Scene key='startPage' initial={true} component={startPage} title='スタート画面'/>
+          <Scene key='startPage' initial={true} component={startPage}/>
         </Scene>
       </Router>
     );
