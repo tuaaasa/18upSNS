@@ -14,7 +14,6 @@ Expo XDEを開き,Open existing project...をクリックし,kokuletterフォル
 
 以下コマンドを入力.
 
-    $ npm install  
-    $ npm install exp --global
+    $ npm install  $ npm install exp --global
 
 kokuletter/node_modules/react-native-parallax-view/lib/ParallaxView.js内のコメントアウト部分を変更
