@@ -14,17 +14,17 @@ Expo XDEを開き,Open existing project...をクリックし,kokuletterフォル
 
 以下コマンドを入力.
 
-    npm install
-    npm install exp --global
+    $ npm install
+    $ npm install exp --global
 
 kokuletter/node_modules/react-native-parallax-view/lib/ParallaxView.js内のコメントアウト部分を変更
 
     'use strict';
-     import PropTypes from 'prop-types'; //追加
-
+    import PropTypes from 'prop-types'; //追加
+    
     var React = require('react');
-    var createReactClass = require('create-react-class'); //追加
-    var ReactNative = require('react-native');
+    var createReactClass = require('create-react-class'); //追加
+    var ReactNative = require('react-native');
     var {
         Dimensions,
         StyleSheet,
