@@ -14,46 +14,7 @@ Expo XDEを開き,Open existing project...をクリックし,kokuletterフォル
 
 以下コマンドを入力.
 
-    $ npm install
+    $ npm install  
     $ npm install exp --global
 
 kokuletter/node_modules/react-native-parallax-view/lib/ParallaxView.js内のコメントアウト部分を変更
-
-    'use strict';
-    import PropTypes from 'prop-types'; //追加
-    
-    var React = require('react');
-    var createReactClass = require('create-react-class'); //追加
-    var ReactNative = require('react-native');
-    var {
-        Dimensions,
-        StyleSheet,
-        View,
-        ScrollView,
-        Animated,
-        } = ReactNative;
-    /**
-     * BlurView temporarily removed until semver stuff is set up properly
-     */
-    //var BlurView /* = require('react-native-blur').BlurView */;
-    var ScrollableMixin = require('react-native-scrollable-mixin');
-    var screen = Dimensions.get('window');
-    var ScrollViewPropTypes = ScrollView.propTypes;
-
-    var ParallaxView = createReactClass({ //変更
-        mixins: [ScrollableMixin],
-
-        propTypes: {
-            ...ScrollViewPropTypes,
-            windowHeight: PropTypes.number, //変更
-            backgroundSource: PropTypes.oneOfType([ //変更
-              PropTypes.shape({ //変更
-                uri: PropTypes.string, //変更
-              }),
-              // Opaque type returned by require('./image.jpg')
-              PropTypes.number, //変更
-            ]),
-            header: PropTypes.node, //変更
-            blur: PropTypes.string, //変更
-            contentInset: PropTypes.object, //変更
-        },
