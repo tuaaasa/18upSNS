@@ -18,7 +18,7 @@ Expo XDEを開き,Open existing project...をクリックし,kokuletterフォル
     
     $ npm install exp --global
 
-kokuletter/node_modules/react-native-parallax-view/lib/ParallaxView.js内のコメントアウト部分を変
+kokuletter/node_modules/react-native-parallax-view/lib/ParallaxView.js内のコメントアウト部分を変更
 
 ```Javascript
 'use strict';
