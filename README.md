@@ -20,7 +20,7 @@ Expo XDEを開き,Open existing project...をクリックし,kokuletterフォル
 
 kokuletter/node_modules/react-native-parallax-view/lib/ParallaxView.js内のコメントアウト部分を変
 
-```
+```Javascript
 'use strict';
  import PropTypes from 'prop-types'; //add
 
