@@ -70,3 +70,4 @@ macの方は以下のコマンドを入力.
 
     $ npm install -g create-react-app
 
+windowsの方は https://qiita.com/courage-liberty/items/2e1b72b0acb15ad78e1e を参考に環境構築を行ってください.
