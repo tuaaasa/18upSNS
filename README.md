@@ -7,13 +7,13 @@ Expo XDEは https://github.com/expo/xde/releases からMacの方は.dmgを,Windo
 
 次にExpoのアカウントを作成し,ログインしてください.(PCとアプリで同じアカウントを使うこと)
 
-Expo XDEを開き,Open existing project...をクリックし,kokuletterフォルダを開きます.
-その後,アプリでプロジェクトを実行します.
+## 1.react nativeの環境構築
 
-## 設定
+macの方は https://qiita.com/hommah01/items/7a7309f4b0dbc6caf873 のXcodeとXcode Command Line Toolsまでの作業を行ってください.
+その後以下コマンドを入力.
 
-以下コマンドを入力.
-
+    $ npm install -g create-react-native-app
+    
     $ npm install
     
     $ npm install exp --global
@@ -60,3 +60,13 @@ var ParallaxView = createReactClass({ //change
         contentInset: PropTypes.object, //change
     },
 ```
+
+変更後,Expo XDEを開きOpen Project...からkokuletterフォルダを選択し,開くと実行される.
+
+
+## 2.reactの環境構築
+
+macの方は以下のコマンドを入力.
+
+    $ npm install -g create-react-app
+
