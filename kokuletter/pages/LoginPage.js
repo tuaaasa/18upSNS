@@ -1,77 +1,91 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  getPersonalKey,
-  loginUser,
-  keyToName, //テスト
-} from './components/database.js';
-import {
     Actions,
+    ActionConst,
 } from 'react-native-router-flux';
+import {
+  Container,
+  Header,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
+  Text,
+  Body,
+  Left,
+  Right,
+  Form,
+  Item,
+  Input,
+  Label,
+  Title,
+} from 'native-base';
+import {
+  // checkLogin,
+  // setPersonalInfo,
+  checkUserId,
+} from './components/database.js';
 
-export default class LoginPage extends Component {
-  constructor(props) {
+export default class loginPage extends Component {
+  constructor(props){
     super(props);
+
+    this.text = {};
+    this.state = {
+      userID: '',
+      validation: false,
+    };
   }
 
-  _onPress = () => {  //バリデーション設定が必要
-    getPersonalKey(this.userName._lastNativeText, this.userPass._lastNativeText, (userKey) => {
-      if(userKey){
-        loginUser(userKey, (value) => {
-          if(value){
-            Actions.timeLine();
-          }
+  _loginAction = () => {
+    checkUserId(this.state.userID, (value) => {
+      if(value){
+        Actions.timeLine({
+          userKey: this.state.userID,
         });
       }else{
-        // ここにバリデーション
-        console.log('ない');
+        this.setState({validation: true});
       }
     });
   }
 
-  render() {
-    return (
-      <View style={styles.pageContainer}>
-        <Text style={styles.text}>名前</Text>
-        <TextInput style={styles.textInput} ref={(ref) => { this.userName = ref; }}/>
-        <Text style={styles.text}>パスワード</Text>
-        <TextInput style={styles.textInput} ref={(ref) => { this.userPass = ref; }}/>
-        <TouchableOpacity onPress={this._onPress}>
-          <Text style={styles.buttonText}>ログイン</Text>
-        </TouchableOpacity>
-      </View>
+  render(){
+    return(
+      <Container>
+        <Header>
+          <Left>
+            <Button transparent onPress={Actions.pop}>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body>
+            <Title>{this.props.title}</Title>
+          </Body>
+          <Right/>
+        </Header>
+        <Content>
+          <Form style={{padding: 10}}>
+            <Item
+              stackedLabel
+              underline
+              last
+              error={this.state.validation}
+            >
+              <Label>UserID</Label>
+              <Input
+                autoCapitalize={'none'}
+                onChangeText={(userID) => this.setState({userID: userID})}
+              />
+            </Item>
+          </Form>
+          <Body>
+            <Button onPress={this._loginAction}>
+              <Text>Sign in</Text>
+            </Button>
+          </Body>
+        </Content>
+      </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  pageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    alignItems: 'stretch',
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  textInput: {
-    backgroundColor: '#FFF',
-    padding: 10,
-    margin: 10,
-  },
-  buttonText: {
-    fontSize: 20,
-    textAlign: 'center',
-    backgroundColor: '#2ECCFA',
-    margin: 10,
-    padding: 10,
-  },
-});

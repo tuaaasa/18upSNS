@@ -20,31 +20,21 @@ import {
   getLoginUser,
   getPersonalInfo,
 } from './pages/components/database.js';
-import timeLine from './pages/timeLinePage.js';
-import chat from './pages/chat.js';
-import themeNavBar from './pages/components/themeNavBar.js';
 import startPage from './pages/startPage.js';
-import personalPage from './pages/personalPage.js';
-// import pushMessage from './pages/pushMessage.js';
-import MenuIcon from './pages/components/images/menu_burger.png';
-// import send from './pages/components/images/send.png';
-import DrawerContent from './pages/components/DrawerContent.js';
+import loginPage from './pages/loginPage.js';
+import mainPage from './pages/mainPage.js';
+import pushMessage from './pages/pushMessage.js';
 
 class App extends Component {
   render() {
-    // logoutUser();
+    logoutUser();
     return (
       <Router>
         <Scene key="root" hideNavBar={ true }>
-          <Drawer key="drawer"
-            contentComponent={DrawerContent}
-            drawerWidth={ 300 }
-            drawerImage={MenuIcon}
-          >
-            <Scene key='timeLine' component={timeLine} title='タイムライン'/>
-            <Scene key='personalPage' hideNavBar={ true } component={personalPage}/>
-          </Drawer>
+          <Scene key='mainPage' component={mainPage}/>
           <Scene key='startPage' initial={true} component={startPage}/>
+          <Scene key='loginPage' component={loginPage} title='ログイン'/>
+          <Scene key='pushMessage' component={pushMessage} title='メッセージ'/>
         </Scene>
       </Router>
     );

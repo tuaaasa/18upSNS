@@ -1,17 +1,41 @@
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Modal,
   Alert,
 } from 'react-native';
 import {
-    Actions,
+  Container,
+  Header,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
+  Text,
+  Body,
+  Left,
+  Right,
+  Form,
+  Textarea,
+  Item,
+  Input,
+  Label,
+  Title,
+} from 'native-base';
+import {
+  Actions,
 } from 'react-native-router-flux';
+import {
+  getSalsal,
+  checkLogin,
+  getLocalSalsal,
+  setLocalSalsal,
+  setGood,
+} from './components/database.js';
+import firebase from './components/firebase.js';
+
+const db = firebase.database();
+const ref = db.ref('salsals');
+let date = new Date();
 
 export default class pushMessage extends Component {
   constructor(props){
@@ -25,33 +49,93 @@ export default class pushMessage extends Component {
     };
   }
 
+  sendMessage = () => {
+    // アラート→バリデーションに変更
+    if(this.state.pushText.length > 0){
+      let pushTo = this.state.pushTo;
+      if(pushTo.length == 0){
+        Alert.alert(
+          '宛先を教えてください',
+          '',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => this.setState({
+                pushText: '',
+              }),
+              style: 'cancel',
+            },
+            {text: 'OK'},
+          ],
+          { cancelable: false },
+        );
+      }else{
+        ref.push().set({
+          salsal: this.state.pushText,
+          toName: pushTo,
+          userKey: this.props.userKey,
+          date: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
+          time: date.getMinutes() > 9
+                ? date.getHours()+':'+date.getMinutes()
+                : date.getHours()+':0'+date.getMinutes(),
+        });
+        Actions.pop();
+      }
+    }else{
+      Alert.alert(
+        '本文を入力してください',
+        '',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => this.setState({
+              pushTo: '',
+            }),
+            style: 'cancel',
+          },
+          {text: 'OK'},
+        ],
+        { cancelable: false },
+      );
+    }
+  }
+
   render() {
     return(
-      <View style={styles.pageContainer}>
-        <TextInput
-          style={styles.textInputUnderBar}
-          placeholder='Dear'
-          autoCapitalize='none'
-          multiline={false}
-          ref={(ref) => { this.to = ref; }}
-          onChangeText={(text) => {this.setState({pushTo: text})}}
-        />
-        <TextInput
-          style={styles.textInputMain}
-          placeholder='本文'
-          autoCapitalize='none'
-          multiline={true}
-          ref={(ref) => { this.main = ref; }}
-          onChangeText={(text) => {this.setState({pushText: text})}}
-        />
-      </View>
+      <Container style={{backgroundColor: '#fdf5e6'}}>
+        <Header>
+          <Left>
+            <Button transparent onPress={Actions.pop}>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body>
+            <Title>{this.props.title}</Title>
+          </Body>
+          <Right>
+          <Button transparent onPress={this.sendMessage}>
+            <Icon name='send' />
+          </Button>
+          </Right>
+        </Header>
+        <Content>
+          <Form>
+            <Item>
+              <Input
+                placeholder="宛先"
+                ref={(ref) => { this.to = ref; }}
+                onChangeText={(text) => {this.setState({pushTo: text})}}
+              />
+            </Item>
+            <Textarea
+              rowSpan={10}
+              placeholder="本文"
+              ref={(ref) => { this.main = ref; }}
+              onChangeText={(text) => {this.setState({pushText: text})}}
+            />
+          </Form>
+        </Content>
+      </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  pageContainer: {
-    flex: 1,
-    backgroundColor: '#fdf5e6',
-  },
-});
