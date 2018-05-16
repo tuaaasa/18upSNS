@@ -4,28 +4,22 @@ import {
 } from 'react-native';
 import {
   Container,
-  Header,
   Content,
-  Footer,
-  FooterTab,
   Button,
   Icon,
   Text,
   Body,
   Left,
   Right,
-  Grid,
-  Col,
-  Row,
-　List,
   Card,
   CardItem,
-  ListItem,
+  // ActionSheet,
 } from 'native-base';
 import {
   setGood,
   removeSalsal,
 } from './components/database.js';
+// const BUTTONS = ["Delete", "Cancel"];
 
 export default class Salsals extends Component{
   constructor(props){
@@ -33,6 +27,19 @@ export default class Salsals extends Component{
   }
 
   alert = () => {
+    // ActionSheet.show(
+    //   {
+    //     options: BUTTONS,
+    //     cancelButtonIndex: 1,
+    //     destructiveButtonIndex: 0,
+    //     title: "メニュー",
+    //   },
+    //   buttonIndex => {
+    //     if(buttonIndex == 0){
+    //       removeSalsal(this.props.salsalKey);
+    //     }
+    //   }
+    // );
     Alert.alert(
       '削除しますか',
       '',

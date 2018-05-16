@@ -1,26 +1,11 @@
 import React, { Component } from 'react';
 import {
   Container,
-  Header,
   Content,
   Footer,
   FooterTab,
   Button,
   Icon,
-  Text,
-  Body,
-  Left,
-  Right,
-  Grid,
-  Col,
-  Row,
-　List,
-  Card,
-  CardItem,
-  ListItem,
-  Title,
-  Tabs,
-  Tab,
 } from 'native-base';
 import {
     Actions,
@@ -28,6 +13,7 @@ import {
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TimeLine from './timeLinePage.js';
 import PersonalPage from './personalPage.js';
+import header from './components/images/header.png';
 
 export default class mainPage extends Component {
   constructor(props){
@@ -35,6 +21,8 @@ export default class mainPage extends Component {
 
     this.state = {
       viewPageNum: 0,
+      listUpdate: 0,
+      badge: false,
     }
   }
 
@@ -43,9 +31,19 @@ export default class mainPage extends Component {
       <Container>
         {(() => {
           if(this.state.viewPageNum == 0){
-            return(<TimeLine userKey={this.props.userKey}/>);
+            return(
+              <TimeLine
+                image={header}
+                userKey={this.props.userKey}
+              />
+            );
           }else{
-            return(<PersonalPage userKey={this.props.userKey}/>);
+            return(
+              <PersonalPage
+                image={header}
+                userKey={this.props.userKey}
+              />
+            );
           }
         })()}
         <Footer>

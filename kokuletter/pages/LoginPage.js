@@ -7,8 +7,6 @@ import {
   Container,
   Header,
   Content,
-  Footer,
-  FooterTab,
   Button,
   Icon,
   Text,
@@ -22,8 +20,6 @@ import {
   Title,
 } from 'native-base';
 import {
-  // checkLogin,
-  // setPersonalInfo,
   checkUserId,
 } from './components/database.js';
 
@@ -41,7 +37,7 @@ export default class loginPage extends Component {
   _loginAction = () => {
     checkUserId(this.state.userID, (value) => {
       if(value){
-        Actions.timeLine({
+        Actions.mainPage({
           userKey: this.state.userID,
         });
       }else{

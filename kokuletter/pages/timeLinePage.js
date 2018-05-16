@@ -11,24 +11,12 @@ import {
   Container,
   Header,
   Content,
-  Footer,
-  FooterTab,
   Button,
   Icon,
-  Text,
   Body,
-  Left,
-  Right,
-  Grid,
-  Col,
-  Row,
-　List,
-  Card,
-  CardItem,
-  ListItem,
   Title,
   Fab,
-  View,
+  Spinner,
 } from 'native-base';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Salsals from './Salsals.js';
@@ -112,15 +100,22 @@ export default class timeLinePage extends Component {
             <Title>タイムライン</Title>
           </Body>
         </Header>
-        <Content padder>
-          <FlatList
-            style={{flex: 1}}
-            data={this.state.salsalList}
-            execData={this.state.listUpdate}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
-          />
-        </Content>
+        <ImageBackground
+          style={{flex: 1}}
+          source={this.props.image}
+          resizeMode='cover'
+        >
+          <Content padder>
+            <FlatList
+              style={{flex: 1}}
+              ListEmptyComponent={() => <Spinner />}
+              data={this.state.salsalList}
+              execData={this.state.listUpdate}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
+            />
+          </Content>
+        </ImageBackground>
         <Fab
           active={this.state.active}
           direction="up"

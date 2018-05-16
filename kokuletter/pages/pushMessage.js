@@ -6,8 +6,6 @@ import {
   Container,
   Header,
   Content,
-  Footer,
-  FooterTab,
   Button,
   Icon,
   Text,
@@ -18,7 +16,6 @@ import {
   Textarea,
   Item,
   Input,
-  Label,
   Title,
 } from 'native-base';
 import {

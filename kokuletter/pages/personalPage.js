@@ -4,23 +4,12 @@ import {
 } from 'react-native';
 import {
   Container,
-  Header,
   Content,
-  Footer,
-  FooterTab,
   Button,
-  Icon,
   Text,
   Body,
-  Left,
-  Right,
   Grid,
-  Col,
   Row,
-　List,
-  Card,
-  CardItem,
-  ListItem,
   Title,
   Tabs,
   Tab,
@@ -28,16 +17,12 @@ import {
 import {
     Actions,
 } from 'react-native-router-flux';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
 import ParallaxView from 'react-native-parallax-view';
 import {
   getSalsal,
 } from './components/database.js';
 import firebase from './components/firebase.js';
 import Salsals from './Salsals.js';
-// import RegisterPage from './RegisterPage.js';
-import header from './components/images/header.png';
-import back from './components/images/back_arrow.png';
 
 const db = firebase.database();
 const ref = db.ref('salsals');
@@ -123,7 +108,7 @@ export default class personalPage extends Component {
       <Container>
         <ParallaxView
           style={{backgroundColor: '#fff'}}
-          backgroundSource={header}
+          backgroundSource={this.props.image}
           windowHeight={120}
           header={(
             <Grid>

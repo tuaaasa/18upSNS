@@ -7,8 +7,6 @@ import {
   Container,
   Header,
   Content,
-  Footer,
-  FooterTab,
   Button,
   Icon,
   Text,
@@ -50,7 +48,7 @@ export default class startPage extends Component {
 
   _registerAction = () => {
     setPersonalInfo((key) => {
-      Actions.timeLine({
+      Actions.mainPage({
         userKey: key,
       });
     });
