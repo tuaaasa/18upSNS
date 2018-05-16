@@ -13,6 +13,9 @@ import {
   Right,
   Card,
   CardItem,
+  Grid,
+  Row,
+  Badge,
   // ActionSheet,
 } from 'native-base';
 import {
@@ -103,6 +106,11 @@ export default class Salsals extends Component{
                   return(<Icon name="heart" style={{ color: '#ED4A6A' }}/>);
                 }
               })()}
+              <Badge style={{ backgroundColor: 'transparent' }}>
+                <Text style={{color: this.props.goodUserList ? 'black' : 'white'}}>
+                  {this.props.goodUserList ? this.props.goodUserList.length : 0}
+                </Text>
+              </Badge>
             </Button>
           </Right>
         </CardItem>

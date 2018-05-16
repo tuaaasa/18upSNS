@@ -15,6 +15,7 @@ import {
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TimeLine from './timeLinePage.js';
 import PersonalPage from './personalPage.js';
+import RankingPage from './rankingPage.js';
 import header from './components/images/header.png';
 import firebase from './components/firebase.js';
 
@@ -112,9 +113,18 @@ export default class mainPage extends Component {
                 userKey={this.props.userKey}
               />
             );
-          }else{
+          }else if(this.state.viewPageNum == 1){
             return(
               <PersonalPage
+                image={header}
+                salsalList={this.state.salsalList}
+                listUpdate={this.state.listUpdate}
+                userKey={this.props.userKey}
+              />
+            );
+          }else{
+            return(
+              <RankingPage
                 image={header}
                 salsalList={this.state.salsalList}
                 listUpdate={this.state.listUpdate}
@@ -146,6 +156,13 @@ export default class mainPage extends Component {
                 }
               })()}
               <Icon active={this.state.viewPageNum == 0} name="home" />
+            </Button>
+            <Button
+              vertical
+              active={this.state.viewPageNum == 2}
+              onPress={() => this.setState({viewPageNum: 2})}
+            >
+              <Icon active={this.state.viewPageNum == 2} name="star" />
             </Button>
             <Button
               vertical
