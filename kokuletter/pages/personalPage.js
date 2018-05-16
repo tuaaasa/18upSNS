@@ -21,87 +21,24 @@ import ParallaxView from 'react-native-parallax-view';
 import {
   getSalsal,
 } from './components/database.js';
-import firebase from './components/firebase.js';
 import Salsals from './Salsals.js';
-
-const db = firebase.database();
-const ref = db.ref('salsals');
 
 export default class personalPage extends Component {
   constructor(props) {
     super(props);
-
-    this.list = [];
-    this.state = {
-      salsalList: this.list,
-      listUpdate: 0,
-    };
-  }
-
-  componentDidMount(){
-    ref.on('child_added', (data) => {
-      this.list.unshift({
-        salsalKey: data.key,
-        userKey: data.val().userKey,
-        toName: data.val().toName,
-        salsal: data.val().salsal,
-        date: data.val().date,
-        time: data.val().time,
-        goodUserList: data.val().goodUserList,
-      });
-      this.setState({
-        salsalList: this.list,
-        listUpdate: this.state.listUpdate + 1,
-      });
-    });
-
-    ref.on('child_changed', (data) => {
-      for(let i=0;i<this.state.salsalList.length;i++){
-        if(this.state.salsalList[i].salsalKey.match(data.key)){
-          this.list.splice(i, 1);
-          this.list.splice(i, 0, {
-            salsalKey: data.key,
-            userKey: data.val().userKey,
-            toName: data.val().toName,
-            salsal: data.val().salsal,
-            date: data.val().date,
-            time: data.val().time,
-            goodUserList: data.val().goodUserList,
-          });
-          this.setState({
-            salsalList: this.list,
-            listUpdate: this.state.listUpdate + 1,
-          });
-          break;
-        }
-      }
-    });
-
-    ref.on('child_removed', (data) => {
-      for(let i=0;i<this.state.salsalList.length;i++){
-        if(this.state.salsalList[i].salsalKey.match(data.key)){
-          this.list.splice(i, 1);
-          this.setState({
-            salsalList: this.list,
-            listUpdate: this.state.listUpdate + 1,
-          });
-          break;
-        }
-      }
-    });
   }
 
   render() {
     const myList = [];
     const goodList = [];
-    for(let i=0;i<this.state.salsalList.length;i++){
-      if(this.state.salsalList[i].goodUserList){
-        if(this.state.salsalList[i].goodUserList.indexOf(this.props.userKey) >= 0){
-          goodList.push(this.state.salsalList[i]);
+    for(let i=0;i<this.props.salsalList.length;i++){
+      if(this.props.salsalList[i].goodUserList){
+        if(this.props.salsalList[i].goodUserList.indexOf(this.props.userKey) >= 0){
+          goodList.push(this.props.salsalList[i]);
         }
       }
-      if(this.state.salsalList[i].userKey.match(this.props.userKey)){
-        myList.push(this.state.salsalList[i]);
+      if(this.props.salsalList[i].userKey.match(this.props.userKey)){
+        myList.push(this.props.salsalList[i]);
       }
     }
     return(
@@ -124,7 +61,7 @@ export default class personalPage extends Component {
             <Tab heading="投稿">
               <FlatList
                 data={myList}
-                execData={this.state.listUpdate}
+                execData={this.props.listUpdate}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
               />
@@ -132,7 +69,7 @@ export default class personalPage extends Component {
             <Tab heading="いいね">
               <FlatList
                 data={goodList}
-                execData={this.state.listUpdate}
+                execData={this.props.listUpdate}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
               />
