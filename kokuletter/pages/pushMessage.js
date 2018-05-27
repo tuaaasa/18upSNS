@@ -27,6 +27,7 @@ import {
   getLocalSalsal,
   setLocalSalsal,
   setGood,
+  setRandMessage,
 } from './components/database.js';
 import firebase from './components/firebase.js';
 
@@ -67,14 +68,19 @@ export default class pushMessage extends Component {
           { cancelable: false },
         );
       }else{
-        ref.push().set({
-          salsal: this.state.pushText,
-          toName: pushTo,
-          userKey: this.props.userKey,
-          date: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
-          time: date.getMinutes() > 9
-                ? date.getHours()+':'+date.getMinutes()
-                : date.getHours()+':0'+date.getMinutes(),
+        const salsalKey = ref.push();
+        setRandMessage(salsalKey.key, (key) => {
+          const salsal = {
+            salsal: this.state.pushText,
+            toName: pushTo,
+            userKey: this.props.userKey,
+            sendUserKey: key,
+            date: date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
+            time: date.getMinutes() > 9
+                  ? date.getHours()+':'+date.getMinutes()
+                  : date.getHours()+':0'+date.getMinutes(),
+          };
+          salsalKey.set(salsal);
         });
         Actions.pop();
       }

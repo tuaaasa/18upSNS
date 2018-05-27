@@ -38,6 +38,18 @@ export const getSalsal = (onSalsal) => {
 }
 
 export const removeSalsal = (salsalKey) => {
+  FB.ref('salsals/'+salsalKey).on('child_added', (data) => {
+    if(data.key.match('sendUserKey')){
+      const path = 'users/'+data.val()+'/receiveMessage';
+      let num = '';
+      FB.ref(path).on('child_added', (salsal) => {
+        if(salsal.val().match(salsalKey)){
+          num = salsal.key;
+        }
+      });
+      FB.ref(path+'/'+num).remove();
+    }
+  });
   FB.ref('salsals/'+salsalKey).remove();
 }
 
@@ -76,6 +88,51 @@ export const setGood = (userKey, salsalKey) => {
       }
       update['salsals/'+salsalKey+'/goodUserList'] = goodUserList;
       FB.ref().update(update);
+    }
+  });
+}
+
+export const setRandMessage = (salsalKey, onCallback) => {
+  const userKeys = [];
+  let count = 0;
+  FB.ref('users').on('child_added', (data) => {
+    userKeys.push(data.key);
+    count++;
+  });
+  FB.ref('users').once('value', (data) => {
+    if(data.numChildren() == count){
+      const rand_value = Math.floor(Math.random() * data.numChildren());
+      onCallback(userKeys[rand_value]);
+
+      const path = 'users/'+userKeys[rand_value]+'/receiveMessage';
+      FB.ref(path).once('value', (val) => {
+        let update = {};
+        if(!val.val()){
+          update[path] = [salsalKey];
+          FB.ref().update(update);
+        }else{
+          const currentMessage = [].concat(val.val());
+          currentMessage.push(salsalKey);
+          update[path] = currentMessage;
+          FB.ref().update(update);
+        }
+      });
+    }
+  });
+}
+
+export const referenceMessage = (salsalKey, onCallback) => {
+  FB.ref('salsals').on('child_added', (data) => {
+    if(data.key.match(salsalKey)){
+      onCallback({
+        salsalKey: data.key,
+        userKey: data.val().userKey,
+        toName: data.val().toName,
+        salsal: data.val().salsal,
+        date: data.val().date,
+        time: data.val().time,
+        goodUserList: data.val().goodUserList,
+      });
     }
   });
 }

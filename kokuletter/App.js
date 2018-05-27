@@ -5,6 +5,7 @@ import {
 } from 'react-native-router-flux';
 import {
   logoutUser,
+  setRandMessage,
 } from './pages/components/database.js';
 import startPage from './pages/startPage.js';
 import loginPage from './pages/loginPage.js';
@@ -14,6 +15,7 @@ import pushMessage from './pages/pushMessage.js';
 class App extends Component {
   render() {
     // logoutUser();
+    // setRandMessage();
     return (
       <Router>
         <Scene key="root" hideNavBar={ true }>

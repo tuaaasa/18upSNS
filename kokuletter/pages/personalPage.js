@@ -66,6 +66,14 @@ export default class personalPage extends Component {
                 renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
               />
             </Tab>
+            <Tab heading="受け取ったメッセージ">
+              <FlatList
+                data={this.props.receiveSalsalList}
+                execData={this.props.receiveListUpdate}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => <Salsals goodUserKey={this.props.userKey} {...item} />}
+              />
+            </Tab>
             <Tab heading="いいね">
               <FlatList
                 data={goodList}

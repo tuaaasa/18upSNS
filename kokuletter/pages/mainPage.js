@@ -12,6 +12,9 @@ import {
 import {
     Actions,
 } from 'react-native-router-flux';
+import {
+  referenceMessage,
+} from './components/database.js';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TimeLine from './timeLinePage.js';
 import PersonalPage from './personalPage.js';
@@ -28,12 +31,15 @@ export default class mainPage extends Component {
     super(props);
 
     this.list = [];
+    this.receiveList = [];
     this.state = {
       salsalList: this.list,
+      receiveSalsalList: this.receiveList,
       listUpdate: 0,
       viewPageNum: 0,
-      listUpdate: 0,
+      receiveListUpdate: 0,
       judgeListCount: 0,
+      judgeReceiveListCount: 0,
       badge: false,
     }
   }
@@ -98,6 +104,67 @@ export default class mainPage extends Component {
         }
       }
     });
+
+    const userPath = 'users/'+this.props.userKey+'/receiveMessage';
+    db.ref(userPath).on('child_added', (data) => {
+      if(data.val()){
+        referenceMessage(data.val(), (salsal) => {
+          this.receiveList.push(salsal);
+          this.setState({
+            reseiveSalsalList: this.receiveList,
+            receiveListUpdate: this.state.receiveListUpdate + 1,
+          });
+          if(this.state.viewPageNum == 1){
+            this.setState({judgeReceiveListCount: this.state.receiveListUpdate});
+          }
+        });
+      }
+    });
+
+    db.ref(userPath).on('child_changed', (data) => {
+      if(data.val()){
+        for(let i=0;i<this.state.receiveSalsalList;i++){
+          if(this.state.receiveSalsalList[i].salsalKey.match(data.val())){
+            this.receiveList.splice(i, 1);
+            this.receiveList.splice(i, 0, {
+              salsalKey: data.key,
+              userKey: data.val().userKey,
+              toName: data.val().toName,
+              salsal: data.val().salsal,
+              date: data.val().date,
+              time: data.val().time,
+              goodUserList: data.val().goodUserList,
+            });
+            this.setState({
+              reseiveSalsalList: this.receiveList,
+              receiveListUpdate: this.state.receiveListUpdate + 1,
+            });
+            if(this.state.viewPageNum == 1){
+              this.setState({judgeReceiveListCount: this.state.receiveListUpdate});
+            }
+            break;
+          }
+        }
+      }
+    });
+
+    db.ref(userPath).on('child_removed', (data) => {
+      if(data.val()){
+        for(let i=0;i<this.state.receiveSalsalList.length;i++){
+          if(this.state.receiveSalsalList[i].salsalKey.match(data.val())){
+            this.receiveList.splice(i, 1);
+            this.setState({
+              reseiveSalsalList: this.receiveList,
+              receiveListUpdate: this.state.receiveListUpdate + 1,
+            });
+            if(this.state.viewPageNum == 1){
+              this.setState({judgeReceiveListCount: this.state.receiveListUpdate});
+            }
+            break;
+          }
+        }
+      }
+    });
   }
 
   render(){
@@ -119,6 +186,8 @@ export default class mainPage extends Component {
                 image={header}
                 salsalList={this.state.salsalList}
                 listUpdate={this.state.listUpdate}
+                receiveSalsalList={this.state.receiveSalsalList}
+                receiveListUpdate={this.state.receiveListUpdate}
                 userKey={this.props.userKey}
               />
             );
@@ -136,7 +205,7 @@ export default class mainPage extends Component {
         <Footer>
           <FooterTab>
             <Button
-              badge={this.state.viewPageNum == 1 && this.state.listUpdate != this.state.judgeListCount}
+              badge={this.state.viewPageNum != 0 && this.state.listUpdate != this.state.judgeListCount}
               vertical
               active={this.state.viewPageNum == 0}
               onPress={() => this.setState({
@@ -145,12 +214,10 @@ export default class mainPage extends Component {
               })}
             >
               {(() => {
-                if(this.state.viewPageNum == 1 && this.state.listUpdate != this.state.judgeListCount){
+                if(this.state.viewPageNum != 0 && this.state.listUpdate != this.state.judgeListCount){
                   return(
                     <Badge primary>
-                      <Text>
-                        {this.state.listUpdate-this.state.judgeListCount}
-                      </Text>
+                      <Text> </Text>
                     </Badge>
                   );
                 }
@@ -165,10 +232,25 @@ export default class mainPage extends Component {
               <Icon active={this.state.viewPageNum == 2} name="star" />
             </Button>
             <Button
+              badge={this.state.viewPageNum != 1 && this.state.receiveListUpdate != this.state.judgeReceiveListCount}
               vertical
               active={this.state.viewPageNum == 1}
-              onPress={() => this.setState({viewPageNum: 1})}
+              onPress={() => this.setState({
+                viewPageNum: 1,
+                judgeReceiveListCount: this.state.receiveListUpdate,
+              })}
             >
+              {(() => {
+                if(this.state.viewPageNum != 1 && this.state.receiveListUpdate != this.state.judgeReceiveListCount){
+                  return(
+                    <Badge primary>
+                      <Text>
+                        {this.state.receiveListUpdate-this.state.judgeReceiveListCount}
+                      </Text>
+                    </Badge>
+                  );
+                }
+              })()}
               <Icon active={this.state.viewPageNum == 1} name="person" />
             </Button>
           </FooterTab>

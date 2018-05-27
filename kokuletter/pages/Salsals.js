@@ -30,19 +30,6 @@ export default class Salsals extends Component{
   }
 
   alert = () => {
-    // ActionSheet.show(
-    //   {
-    //     options: BUTTONS,
-    //     cancelButtonIndex: 1,
-    //     destructiveButtonIndex: 0,
-    //     title: "メニュー",
-    //   },
-    //   buttonIndex => {
-    //     if(buttonIndex == 0){
-    //       removeSalsal(this.props.salsalKey);
-    //     }
-    //   }
-    // );
     Alert.alert(
       '削除しますか',
       '',
