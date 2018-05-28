@@ -69,7 +69,7 @@ export default class pushMessage extends Component {
         );
       }else{
         const salsalKey = ref.push();
-        setRandMessage(salsalKey.key, (key) => {
+        setRandMessage(salsalKey.key, this.props.userKey, (key) => {
           const salsal = {
             salsal: this.state.pushText,
             toName: pushTo,

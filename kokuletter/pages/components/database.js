@@ -92,7 +92,7 @@ export const setGood = (userKey, salsalKey) => {
   });
 }
 
-export const setRandMessage = (salsalKey, onCallback) => {
+export const setRandMessage = (salsalKey, userKey, onCallback) => {
   const userKeys = [];
   let count = 0;
   FB.ref('users').on('child_added', (data) => {
@@ -101,22 +101,28 @@ export const setRandMessage = (salsalKey, onCallback) => {
   });
   FB.ref('users').once('value', (data) => {
     if(data.numChildren() == count){
-      const rand_value = Math.floor(Math.random() * data.numChildren());
-      onCallback(userKeys[rand_value]);
+      let i = 0;
+      while(i==0){
+        const rand_value = Math.floor(Math.random() * data.numChildren());
+        if(!userKeys[rand_value].match(userKey)){
+          onCallback(userKeys[rand_value]);
 
-      const path = 'users/'+userKeys[rand_value]+'/receiveMessage';
-      FB.ref(path).once('value', (val) => {
-        let update = {};
-        if(!val.val()){
-          update[path] = [salsalKey];
-          FB.ref().update(update);
-        }else{
-          const currentMessage = [].concat(val.val());
-          currentMessage.push(salsalKey);
-          update[path] = currentMessage;
-          FB.ref().update(update);
+          const path = 'users/'+userKeys[rand_value]+'/receiveMessage';
+          FB.ref(path).once('value', (val) => {
+            let update = {};
+            if(!val.val()){
+              update[path] = [salsalKey];
+              FB.ref().update(update);
+            }else{
+              const currentMessage = [].concat(val.val());
+              currentMessage.push(salsalKey);
+              update[path] = currentMessage;
+              FB.ref().update(update);
+            }
+          });
+          i++;
         }
-      });
+      }
     }
   });
 }
